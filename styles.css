@@ -739,3 +739,27 @@
 .telegram-float:hover {
   transform: scale(1.1);
 }
+.btn-youtube {
+  background-color: #ff0000;
+  color: white;
+  padding: 0.5rem 1.2rem;
+  border-radius: 6px;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.btn-youtube:hover {
+  background-color: #cc0000;
+}
+
+.footer-social {
+  color: #ff0000;
+  text-decoration: none;
+  font-weight: 600;
+  margin: 0 0.5rem;
+}
+
+.footer-social:hover {
+  text-decoration: underline;
+}
