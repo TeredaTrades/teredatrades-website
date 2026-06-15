@@ -763,3 +763,22 @@
 .footer-social:hover {
   text-decoration: underline;
 }
+.discord-float {
+  position: fixed;
+  bottom: 6rem;
+  right: 2rem;
+  background-color: #5865F2;
+  border-radius: 50%;
+  width: 56px;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+  z-index: 9999;
+  transition: transform 0.2s ease;
+}
+
+.discord-float:hover {
+  transform: scale(1.1);
+}
