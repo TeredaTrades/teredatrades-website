@@ -706,3 +706,36 @@
     .hero h1 em { font-size: 2.6rem; }
     .application-form { padding: 2rem; }
   }
+.btn-telegram {
+  background-color: #0088cc;
+  color: white;
+  padding: 0.5rem 1.2rem;
+  border-radius: 6px;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.btn-telegram:hover {
+  background-color: #0077b5;
+}
+
+.telegram-float {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  background-color: #0088cc;
+  border-radius: 50%;
+  width: 56px;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+  z-index: 9999;
+  transition: transform 0.2s ease;
+}
+
+.telegram-float:hover {
+  transform: scale(1.1);
+}
