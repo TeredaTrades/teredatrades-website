@@ -763,3 +763,13 @@
 .footer-social:hover {
   text-decoration: underline;
 }
+.footer-social-telegram {
+  color: #0088cc;
+  text-decoration: none;
+  font-weight: 600;
+  margin: 0 0.5rem;
+}
+
+.footer-social-telegram:hover {
+  text-decoration: underline;
+}
