@@ -81,6 +81,24 @@
       v.trim().length >= 10 || "Please share a bit more (10+ characters)",
   };
 
+  // HubSpot Forms API — sends submissions into the free CRM as contacts.
+  // Portal ID and Form GUID come from the (unpublished-design) form created
+  // in HubSpot solely to define these fields; this script posts directly
+  // to the API rather than using that form's own hosted UI.
+  const HUBSPOT_PORTAL_ID = "148735175";
+  const HUBSPOT_FORM_ID = "39679097-f254-4243-b1f1-e2e3d435e60f";
+  const HUBSPOT_ENDPOINT = `https://api.hsforms.com/submissions/v3/integration/submit/${HUBSPOT_PORTAL_ID}/${HUBSPOT_FORM_ID}`;
+
+  // Maps this form's field names to HubSpot's internal property names
+  const hubspotFieldMap = {
+    firstName: "firstname",
+    lastName: "lastname",
+    email: "email",
+    experience: "trading_experience",
+    interest: "interested_in",
+    message: "which_roadblocks_are_you_facing_in_your_trading_journey",
+  };
+
   function showError(field, message) {
     const group = field.closest(".form-group");
     const errorEl = group?.querySelector(".form-error");
@@ -115,7 +133,7 @@
     setTimeout(() => toast.classList.remove("show"), 4000);
   }
 
-  form?.addEventListener("submit", (e) => {
+  form?.addEventListener("submit", async (e) => {
     e.preventDefault();
     const fields = form.querySelectorAll("input, select, textarea");
     let valid = true;
@@ -125,11 +143,49 @@
     if (!valid) return;
 
     const data = Object.fromEntries(new FormData(form));
-    console.log("Form submission:", data);
 
-    showToast("Application sent! We'll be in touch within 24 hours.");
-    form.reset();
-    fields.forEach((field) => showError(field, ""));
+    const submitBtn = form.querySelector('button[type="submit"]');
+    const originalLabel = submitBtn ? submitBtn.textContent : "";
+    if (submitBtn) {
+      submitBtn.disabled = true;
+      submitBtn.textContent = "Submitting…";
+    }
+
+    const hubspotFields = Object.entries(data)
+      .filter(([key]) => hubspotFieldMap[key])
+      .map(([key, value]) => ({ name: hubspotFieldMap[key], value }));
+
+    try {
+      const response = await fetch(HUBSPOT_ENDPOINT, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          fields: hubspotFields,
+          context: {
+            pageUri: window.location.href,
+            pageName: document.title,
+          },
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error(`HubSpot responded with status ${response.status}`);
+      }
+
+      showToast("Application sent! We'll be in touch within 24 hours.");
+      form.reset();
+      fields.forEach((field) => showError(field, ""));
+    } catch (err) {
+      console.error("Application submission failed:", err);
+      showToast(
+        "Something went wrong sending your application. Please try again or reach us on Discord/Telegram."
+      );
+    } finally {
+      if (submitBtn) {
+        submitBtn.disabled = false;
+        submitBtn.textContent = originalLabel;
+      }
+    }
   });
 
   // Subtle fade-in on scroll
