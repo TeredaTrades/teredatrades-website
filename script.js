@@ -82,12 +82,15 @@
   };
 
   // HubSpot Forms API — sends submissions into the free CRM as contacts.
-  // Portal ID and Form GUID come from the (unpublished-design) form created
-  // in HubSpot solely to define these fields; this script posts directly
-  // to the API rather than using that form's own hosted UI.
+  // Portal ID and Form GUID come from the live "New blank form" built in
+  // HubSpot, which already has these fields connected to CRM properties;
+  // this script posts directly to the API rather than using the form's
+  // own hosted/embedded UI, so the custom design here is preserved.
+  // NOTE: this portal is hosted on HubSpot's EU data center (eu1), so the
+  // submission endpoint must use the api-eu1 host, not the global one.
   const HUBSPOT_PORTAL_ID = "148735175";
-  const HUBSPOT_FORM_ID = "39679097-f254-4243-b1f1-e2e3d435e60f";
-  const HUBSPOT_ENDPOINT = `https://api.hsforms.com/submissions/v3/integration/submit/${HUBSPOT_PORTAL_ID}/${HUBSPOT_FORM_ID}`;
+  const HUBSPOT_FORM_ID = "91254779-ec88-4531-bc3c-3d8faa884143";
+  const HUBSPOT_ENDPOINT = `https://api-eu1.hsforms.com/submissions/v3/integration/submit/${HUBSPOT_PORTAL_ID}/${HUBSPOT_FORM_ID}`;
 
   // Maps this form's field names to HubSpot's internal property names
   const hubspotFieldMap = {
