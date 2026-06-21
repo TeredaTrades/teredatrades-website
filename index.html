@@ -14,7 +14,6 @@
 <body>
   <header class="site-header" id="top">
     <nav class="nav container">
-      <!-- FIX: was assets/BANNER.jpg (wrong image) and had invalid object-fit value -->
       <a href="#top" class="logo">
         <img src="assets/logo.png" alt="Tereda Trades" class="logo-img" width="44" height="44" style="object-fit: cover; object-position: center;" />
         <span class="logo-text">Tereda Trades</span>
@@ -28,16 +27,14 @@
         <li><a href="#mentorship">Mentorship</a></li>
         <li><a href="#results">Results</a></li>
         <li><a href="#contact" class="nav-cta">Apply Now</a></li>
-
+      </ul>
     </nav>
   </header>
 
-  <!-- FIX: removed duplicate <main> and duplicate hero section -->
   <main>
     <section class="hero">
       <div class="hero-banner-stage">
         <div class="hero-banner-track">
-          <!-- FIX: was assets/BANNER.jpg / assets/banner.png — unified to assets/BANNER.png -->
           <img
             src="assets/BANNER.png"
             alt="Tereda Trades — Level Up Circuit Banner"
@@ -200,16 +197,27 @@
           <article class="tier-card featured">
             <div class="tier-badge">Most Popular</div>
             <h3>Elite Mentorship</h3>
-            <p class="tier-desc">For serious traders demanding direct 1-on-1 access, live execution review, and daily session navigation.</p>
-            <div class="tier-price">1-on-1 Coaching</div>
+            <p class="tier-desc">For serious traders demanding direct 1-on-1 access, live execution review, and structured accountability.</p>
+            <div class="tier-price">Hands-On Coaching</div>
             <ul class="tier-features">
               <li>Everything in Starter included</li>
-              <li>Dedicated 1-on-1 live call check-ins weekly</li>
-              <li>Direct trade journal critiques by your mentor</li>
+              <li>Biweekly 1-on-1 live call check-ins</li>
               <li>Live session access (London & NY Killzones)</li>
               <li>Custom risk management blueprinting</li>
             </ul>
             <a href="#contact" class="btn btn-primary w-full">Secure a Seat</a>
+          </article>
+
+          <article class="tier-card tier-card--top">
+            <h3>1-on-1 Coaching</h3>
+            <p class="tier-desc">For committed traders who want maximum access, direct feedback, and the fastest path to consistency.</p>
+            <div class="tier-price">By Application Only</div>
+            <ul class="tier-features">
+              <li>Everything in Elite Mentorship included</li>
+              <li>Direct trade journal critiques by your mentor</li>
+              <li>Twice-weekly 1-on-1 live call check-ins</li>
+            </ul>
+            <a href="#contact" class="btn btn-ghost w-full">Apply for Consideration</a>
           </article>
         </div>
       </div>
@@ -257,8 +265,6 @@
             Submit your details below to schedule your strategy call.
           </p>
         </div>
-        <!-- FIX: form fields renamed to match script.js validators (firstName, lastName, email, experience, interest, message) -->
-        <!-- FIX: removed inline onsubmit alert — script.js handles submission with toast notification -->
         <form class="application-form contact-form" id="contact-form">
           <div class="form-group">
             <label for="firstName">First Name</label>
@@ -279,9 +285,9 @@
             <label for="experience">Current Trading Experience</label>
             <select id="experience" name="experience">
               <option value="">Select your level…</option>
-              <option value="beginner">Absolute Beginner (0–6 months)</option>
-              <option value="intermediate">Intermediate (6 months – 2 years)</option>
-              <option value="advanced">Advanced (2+ years)</option>
+              <option value="Absolute Beginner (0-6 months)">Absolute Beginner (0-6 months)</option>
+              <option value="Intermediate (6 months - 2 years)">Intermediate (6 months - 2 years)</option>
+              <option value="Advanced (2+ years)">Advanced (2+ years)</option>
             </select>
             <span class="form-error" aria-live="polite"></span>
           </div>
@@ -289,8 +295,9 @@
             <label for="interest">Program of Interest</label>
             <select id="interest" name="interest">
               <option value="">Select a program…</option>
-              <option value="starter">Starter — Foundation</option>
-              <option value="elite">Elite Mentorship — 1-on-1 Coaching</option>
+              <option value="Starter Program">Starter — Foundation</option>
+              <option value="Elite Mentorship">Elite Mentorship — Hands-On Coaching</option>
+              <option value="1-on-1 Coaching">1-on-1 Coaching — By Application Only</option>
             </select>
             <span class="form-error" aria-live="polite"></span>
           </div>
@@ -301,7 +308,6 @@
           </div>
           <button type="submit" class="btn btn-primary w-full">Submit Application</button>
         </form>
-        <!-- FIX: toast element required by script.js -->
         <div id="toast" role="status" aria-live="polite"></div>
       </div>
     </section>
@@ -321,7 +327,6 @@
   </div>
 </footer>
 
-  <!-- FIX: removed duplicate inline nav script — script.js handles all JS including mobile nav -->
   <script src="script.js"></script>
   <a href="https://discord.gg/Cd6qRq2PVn" target="_blank" class="discord-float" aria-label="Join our Discord">
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white" width="28" height="28">
