@@ -156,7 +156,21 @@
 
     const hubspotFields = Object.entries(data)
       .filter(([key]) => hubspotFieldMap[key])
-      .map(([key, value]) => ({ name: hubspotFieldMap[key], value }));
+      .map(([key, value]) => ({
+        objectTypeId: "0-1", // Contacts
+        name: hubspotFieldMap[key],
+        value,
+      }));
+
+    // Grab the HubSpot tracking cookie (hutk) if present, so the submission
+    // is associated with this visitor. Missing this is the most common
+    // cause of partial/odd behavior with the Forms API.
+    function getHubspotUtk() {
+      const match = document.cookie.match(/(?:^|;\s*)hubspotutk=([^;]+)/);
+      return match ? match[1] : undefined;
+    }
+
+    const hutk = getHubspotUtk();
 
     try {
       const response = await fetch(HUBSPOT_ENDPOINT, {
@@ -167,6 +181,7 @@
           context: {
             pageUri: window.location.href,
             pageName: document.title,
+            ...(hutk ? { hutk } : {}),
           },
         }),
       });
