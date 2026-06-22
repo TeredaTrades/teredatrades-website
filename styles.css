@@ -881,11 +881,11 @@
 }
 
 .confirm-next-heading {
-  font-size: 0.8rem;
-  font-weight: 700;
+  font-size: 1rem;
+  font-weight: 800;
   text-transform: uppercase;
-  letter-spacing: 0.08em;
-  color: var(--text-muted);
+  letter-spacing: 0.06em;
+  color: #ffffff;
   margin-bottom: 1.25rem;
 }
 
@@ -937,3 +937,4 @@
 .discord-float:hover {
   transform: scale(1.1);
 }
+.nowrap { white-space: nowrap; }
