@@ -180,6 +180,17 @@
 
     const hutk = getHubspotUtk();
 
+    // Generate reference number BEFORE submitting, so it can be sent
+    // along with the rest of the data to Sheets.
+    const now = new Date();
+    const mm = String(now.getMonth() + 1).padStart(2, '0');
+    const dd = String(now.getDate()).padStart(2, '0');
+    const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ0123456789';
+    let rand = '';
+    for (let i = 0; i < 3; i++) rand += chars[Math.floor(Math.random() * chars.length)];
+    const refNumber = `TTW-${mm}${dd}-${rand}`;
+    data.referenceNumber = refNumber;
+
     try {
       // Fire both submissions in parallel. Each is independently wrapped
       // so a failure in one (e.g. HubSpot dropping a field) never blocks
@@ -224,15 +235,6 @@
       if (!hubspotOk && !sheetsOk) {
         throw new Error("Both submission targets failed.");
       }
-
-      // Generate reference number: TTW-MMDD-XXX
-      const now = new Date();
-      const mm = String(now.getMonth() + 1).padStart(2, '0');
-      const dd = String(now.getDate()).padStart(2, '0');
-      const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ0123456789';
-      let rand = '';
-      for (let i = 0; i < 3; i++) rand += chars[Math.floor(Math.random() * chars.length)];
-      const refNumber = `TTW-${mm}${dd}-${rand}`;
 
       document.getElementById('refNumber').textContent = refNumber;
       form.style.display = 'none';
