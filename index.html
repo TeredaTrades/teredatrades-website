@@ -308,6 +308,38 @@
           </div>
           <button type="submit" class="btn btn-primary w-full">Submit Application</button>
         </form>
+
+        <div id="confirmation" class="confirmation-panel" aria-live="polite" hidden>
+          <div class="confirm-check">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="26" height="26" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+          <h3 class="confirm-title">Application received!</h3>
+          <p class="confirm-sub">Your reference number is:</p>
+          <div class="confirm-ref-row">
+            <span class="confirm-ref" id="refNumber"></span>
+            <button class="confirm-copy" id="copyBtn" aria-label="Copy reference number">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="15" height="15" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+              <span id="copyLabel">Copy</span>
+            </button>
+          </div>
+          <hr class="confirm-divider" />
+          <p class="confirm-next-heading">To proceed with payment and enrollment:</p>
+          <div class="confirm-step">
+            <span class="confirm-step-num">1</span>
+            <div>
+              <p>Join our Telegram channel</p>
+              <a href="https://t.me/TeredaTrades" target="_blank" class="confirm-tg-link">Join Channel →</a>
+            </div>
+          </div>
+          <div class="confirm-step">
+            <span class="confirm-step-num">2</span>
+            <div>
+              <p>Message the admin with your reference number above</p>
+              <p class="confirm-note">We'll be in touch shortly.</p>
+            </div>
+          </div>
+        </div>
+
         <div id="toast" role="status" aria-live="polite"></div>
       </div>
     </section>
