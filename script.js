@@ -225,7 +225,29 @@
         throw new Error("Both submission targets failed.");
       }
 
-      showToast("Application sent! We'll be in touch within 24 hours.");
+      // Generate reference number: TTW-MMDD-XXX
+      const now = new Date();
+      const mm = String(now.getMonth() + 1).padStart(2, '0');
+      const dd = String(now.getDate()).padStart(2, '0');
+      const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ0123456789';
+      let rand = '';
+      for (let i = 0; i < 3; i++) rand += chars[Math.floor(Math.random() * chars.length)];
+      const refNumber = `TTW-${mm}${dd}-${rand}`;
+
+      document.getElementById('refNumber').textContent = refNumber;
+      form.style.display = 'none';
+      const confirmation = document.getElementById('confirmation');
+      confirmation.hidden = false;
+      confirmation.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+      document.getElementById('copyBtn').addEventListener('click', () => {
+        navigator.clipboard.writeText(refNumber).then(() => {
+          const label = document.getElementById('copyLabel');
+          label.textContent = 'Copied!';
+          setTimeout(() => { label.textContent = 'Copy'; }, 2000);
+        });
+      });
+
       form.reset();
       fields.forEach((field) => showError(field, ""));
     } catch (err) {
