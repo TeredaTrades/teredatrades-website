@@ -92,6 +92,14 @@
   const HUBSPOT_FORM_ID = "91254779-ec88-4531-bc3c-3d8faa884143";
   const HUBSPOT_ENDPOINT = `https://api-eu1.hsforms.com/submissions/v3/integration/submit/${HUBSPOT_PORTAL_ID}/${HUBSPOT_FORM_ID}`;
 
+  // Google Sheets backup logger — HubSpot's Forms API currently drops
+  // custom properties (trading_experience, interested_in, roadblocks) on
+  // this account, while only firstname/lastname/email save correctly.
+  // Until that's resolved, every submission is also sent here so the full
+  // application data is never lost, regardless of what HubSpot does with it.
+  const SHEETS_ENDPOINT =
+    "https://script.google.com/macros/s/AKfycbxpuKqhrmaqVatXvACHxsYX19lXSxZyrnlrcMWVoOuGs_cQtDVxTq5h-zObs5Qaug7F/exec";
+
   // Maps this form's field names to HubSpot's internal property names
   const hubspotFieldMap = {
     firstName: "firstname",
@@ -173,7 +181,11 @@
     const hutk = getHubspotUtk();
 
     try {
-      const response = await fetch(HUBSPOT_ENDPOINT, {
+      // Fire both submissions in parallel. Each is independently wrapped
+      // so a failure in one (e.g. HubSpot dropping a field) never blocks
+      // or hides the result of the other — the visitor sees one outcome,
+      // but both backends get an honest attempt every time.
+      const hubspotPromise = fetch(HUBSPOT_ENDPOINT, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -186,8 +198,31 @@
         }),
       });
 
-      if (!response.ok) {
-        throw new Error(`HubSpot responded with status ${response.status}`);
+      const sheetsPromise = fetch(SHEETS_ENDPOINT, {
+        method: "POST",
+        headers: { "Content-Type": "text/plain;charset=utf-8" },
+        body: JSON.stringify(data),
+      });
+
+      const [hubspotResult, sheetsResult] = await Promise.allSettled([
+        hubspotPromise,
+        sheetsPromise,
+      ]);
+
+      const hubspotOk =
+        hubspotResult.status === "fulfilled" && hubspotResult.value.ok;
+      const sheetsOk =
+        sheetsResult.status === "fulfilled" && sheetsResult.value.ok;
+
+      if (!hubspotOk) {
+        console.error("HubSpot submission failed:", hubspotResult);
+      }
+      if (!sheetsOk) {
+        console.error("Sheets backup submission failed:", sheetsResult);
+      }
+
+      if (!hubspotOk && !sheetsOk) {
+        throw new Error("Both submission targets failed.");
       }
 
       showToast("Application sent! We'll be in touch within 24 hours.");
