@@ -7,6 +7,7 @@
   <title>Tereda Trades | Trading Mentorship</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="preload" as="image" href="assets/BANNER.webp" fetchpriority="high">
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="styles.css" />
   <link rel="icon" href="assets/logo.png" type="image/png" />
@@ -35,14 +36,19 @@
     <section class="hero">
       <div class="hero-banner-stage">
         <div class="hero-banner-track">
-          <img
-            src="assets/BANNER.png"
-            alt="Tereda Trades — Level Up Circuit Banner"
-            class="hero-banner"
-            loading="eager"
-            width="1920"
-            height="768"
-          />
+          <picture>
+  <source media="(max-width: 768px)" srcset="assets/BANNER-mobile.webp" type="image/webp">
+  <source srcset="assets/BANNER.webp" type="image/webp">
+  <img
+    src="assets/BANNER.png"
+    alt="Tereda Trades — Level Up Circuit Banner"
+    class="hero-banner"
+    loading="eager"
+    fetchpriority="high"
+    width="1592"
+    height="544"
+  />
+</picture>
         </div>
         <div class="hero-banner-fade"></div>
       </div>
