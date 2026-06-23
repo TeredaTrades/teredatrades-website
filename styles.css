@@ -938,3 +938,10 @@
   transform: scale(1.1);
 }
 .nowrap { white-space: nowrap; }
+.results-disclaimer {
+  margin-top: 2rem;
+  font-size: 0.78rem;
+  color: var(--text-dark);
+  line-height: 1.5;
+  max-width: 800px;
+}
