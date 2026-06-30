@@ -212,7 +212,7 @@
       const sheetsPromise = fetch(SHEETS_ENDPOINT, {
         method: "POST",
         headers: { "Content-Type": "text/plain;charset=utf-8" },
-        body: JSON.stringify(data),
+        body: JSON.stringify({ ...data, secret: "doc1tor9pil9otm2ekd0esb8erh2anu2zewde" }),
       });
 
       const [hubspotResult, sheetsResult] = await Promise.allSettled([
