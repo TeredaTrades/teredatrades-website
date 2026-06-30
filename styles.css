@@ -284,33 +284,7 @@
   .hero-actions {
     display: flex;
     gap: 1rem;
-    margin-bottom: 4rem;
-  }
-  
-  .hero-stats {
-    display: flex;
-    gap: 3.5rem;
-    border-top: 1px solid var(--border-color);
-    padding-top: 2rem;
-  }
-  
-  .stat {
-    display: flex;
-    flex-direction: column;
-  }
-  
-  .stat-value {
-    font-size: 1.75rem;
-    font-weight: 700;
-    color: #ffffff;
-  }
-  
-  .stat-label {
-    font-size: 0.8rem;
-    color: var(--text-dark);
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    margin-top: 0.25rem;
+    margin-bottom: 1rem;
   }
   
   /* ==========================================================================
@@ -698,7 +672,6 @@
     .hero-banner-stage { max-height: 340px; }
     .hero-content { text-align: center; }
     .hero-actions { justify-content: center; }
-    .hero-stats { justify-content: center; }
     .hero-inner { padding-top: 2rem; padding-bottom: 3rem; }
   }
 
