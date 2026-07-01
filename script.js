@@ -145,6 +145,13 @@ function getRecaptchaToken() {
   form?.querySelectorAll("input, select, textarea").forEach((field) => {
     field.addEventListener("blur", () => validateField(field));
     field.addEventListener("input", () => {
+      const messageField = document.getElementById("message");
+const messageCount = document.getElementById("messageCount");
+if (messageField && messageCount) {
+  messageField.addEventListener("input", () => {
+    messageCount.textContent = `${messageField.value.length} / 900`;
+  });
+}
       if (field.classList.contains("error")) validateField(field);
     });
   });
