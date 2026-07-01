@@ -99,8 +99,7 @@
   // application data is never lost, regardless of what HubSpot does with it.
   const SHEETS_ENDPOINT =
     "https://script.google.com/macros/s/AKfycbxpuKqhrmaqVatXvACHxsYX19lXSxZyrnlrcMWVoOuGs_cQtDVxTq5h-zObs5Qaug7F/exec";
-  const RECAPTCHA_SITE_KEY = "6LfKOD8tAAAAAJS6012DV0y8o_j3lKTuXTE1ajW_
-";
+  const RECAPTCHA_SITE_KEY = "6LfKOD8tAAAAAJS6012DV0y8o_j3lKTuXTE1ajW_";
 
 function getRecaptchaToken() {
   return new Promise((resolve, reject) => {
