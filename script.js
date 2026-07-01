@@ -198,10 +198,19 @@ function getRecaptchaToken() {
     const mm = String(now.getMonth() + 1).padStart(2, '0');
     const dd = String(now.getDate()).padStart(2, '0');
     const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ0123456789';
-    let rand = '';
-    for (let i = 0; i < 3; i++) rand += chars[Math.floor(Math.random() * chars.length)];
-    const refNumber = `TTW-${mm}${dd}-${rand}`;
-    data.referenceNumber = refNumber;
+function secureRandomChars(length) {
+  const randomValues = new Uint32Array(length);
+  crypto.getRandomValues(randomValues);
+  let result = '';
+  for (let i = 0; i < length; i++) {
+    result += chars[randomValues[i] % chars.length];
+  }
+  return result;
+}
+const rand = secureRandomChars(8);
+const refNumber = `TTW-${mm}${dd}-${rand}`;
+data.referenceNumber = refNumber;
+    
 const token = await getRecaptchaToken();
 data.recaptchaToken = token;
     try {
