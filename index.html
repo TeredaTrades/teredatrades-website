@@ -44,17 +44,22 @@
     {
       "@type": "Offer",
       "name": "Starter — Foundation",
-      "description": "Core curriculum modules, weekly group chart markup sessions, execution playbooks, and community access."
+      "description": "Telegram community access, weekly market outlook, core curriculum, and limited access to the premarket analysis & journaling tool."
     },
     {
       "@type": "Offer",
-      "name": "Elite Mentorship — Hands-On Coaching",
-      "description": "Biweekly 1-on-1 live calls, live trading session access during London and New York sessions, and custom risk management blueprinting."
+      "name": "Growth — Structured Coaching",
+      "description": "Everything in Starter plus live session access, the expanded journaling tool, and biweekly live Q&A."
     },
     {
       "@type": "Offer",
-      "name": "1-on-1 Coaching — By Application Only",
-      "description": "Direct trade journal critiques and twice-weekly 1-on-1 live call check-ins."
+      "name": "Pro — Full Mentorship",
+      "description": "Everything in Growth plus trade journal review, weekly live Q&A, direct mentor messaging, and access to other tools."
+    },
+    {
+      "@type": "Offer",
+      "name": "Elite — By Application Only",
+      "description": "Everything in Pro plus 1-on-1 coaching calls and priority support."
     }
   ]
 }
@@ -62,7 +67,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link rel="preload" as="image" href="assets/BANNER.webp" fetchpriority="high">
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="styles.css" />
   <link rel="icon" href="assets/logo.png" type="image/png" />
   <script src="https://www.google.com/recaptcha/api.js?render=6LfKOD8tAAAAAJS6012DV0y8o_j3lKTuXTE1ajW_"></script>
@@ -231,39 +236,81 @@
         <div class="tier-grid">
           <article class="tier-card">
             <h3>Starter</h3>
-            <p class="tier-desc">For traders looking to build a rock-solid structural foundation and master the core mechanics.</p>
+            <p class="tier-desc">Learn the framework and start building your foundation.</p>
             <div class="tier-price">Foundation</div>
             <ul class="tier-features">
-              <li>Full access to Core Curriculum modules</li>
-              <li>Weekly group chart markup sessions</li>
-              <li>Proprietary execution PDF playbooks</li>
-              <li>Access to the community student network</li>
+              <li class="on">Telegram community access</li>
+              <li class="on">Weekly market outlook</li>
+              <li class="on">Access to core curriculum</li>
+              <li class="off">Live session access</li>
+              <li class="on">Premarket analysis &amp; trade journaling tool (limited access)</li>
+              <li class="off">Trade journal review</li>
+              <li class="off">Weekly live Q&amp;A</li>
+              <li class="off">Direct mentor messaging</li>
+              <li class="off">1-on-1 coaching calls</li>
+              <li class="off">Access to other tools</li>
+              <li class="off">Priority support</li>
             </ul>
             <a href="#contact" class="btn btn-ghost w-full">Apply Now</a>
           </article>
 
           <article class="tier-card featured">
-            <div class="tier-badge">Most Popular</div>
-            <h3>Elite Mentorship</h3>
-            <p class="tier-desc">For serious traders demanding direct 1-on-1 access, live execution review, and structured accountability.</p>
-            <div class="tier-price">Hands-On Coaching</div>
+            <div class="tier-badge">Most Chosen</div>
+            <h3>Growth</h3>
+            <p class="tier-desc">Add live sessions and structured feedback to your routine.</p>
+            <div class="tier-price">Structured Coaching</div>
             <ul class="tier-features">
-              <li>Everything in Starter included</li>
-              <li>Biweekly 1-on-1 live call check-ins</li>
-              <li>Live session access (London & NY Killzones)</li>
-              <li>Custom risk management blueprinting</li>
+              <li class="on">Telegram community access</li>
+              <li class="on">Weekly market outlook</li>
+              <li class="on">Access to core curriculum</li>
+              <li class="on">Live session access</li>
+              <li class="on">Premarket analysis &amp; trade journaling tool (pre-entry checklist + confluence dashboard, more export options)</li>
+              <li class="off">Trade journal review</li>
+              <li class="on">Live Q&amp;A (2x/month)</li>
+              <li class="off">Direct mentor messaging</li>
+              <li class="off">1-on-1 coaching calls</li>
+              <li class="off">Access to other tools</li>
+              <li class="off">Priority support</li>
             </ul>
             <a href="#contact" class="btn btn-primary w-full">Secure a Seat</a>
           </article>
 
+          <article class="tier-card">
+            <h3>Pro</h3>
+            <p class="tier-desc">Full mentorship access with regular feedback on your trades.</p>
+            <div class="tier-price">Full Mentorship</div>
+            <ul class="tier-features">
+              <li class="on">Telegram community access</li>
+              <li class="on">Weekly market outlook</li>
+              <li class="on">Access to core curriculum</li>
+              <li class="on">Live session access</li>
+              <li class="on">Premarket analysis &amp; trade journaling tool (full version, with entry models)</li>
+              <li class="on">Trade journal review</li>
+              <li class="on">Weekly live Q&amp;A</li>
+              <li class="on">Direct mentor messaging</li>
+              <li class="off">1-on-1 coaching calls</li>
+              <li class="on">Access to other tools</li>
+              <li class="off">Priority support</li>
+            </ul>
+            <a href="#contact" class="btn btn-ghost w-full">Apply Now</a>
+          </article>
+
           <article class="tier-card tier-card--top">
-            <h3>1-on-1 Coaching</h3>
-            <p class="tier-desc">For committed traders who want maximum access, direct feedback, and the fastest path to consistency.</p>
+            <h3>Elite</h3>
+            <p class="tier-desc">Direct, personal coaching to accelerate your development.</p>
             <div class="tier-price">By Application Only</div>
             <ul class="tier-features">
-              <li>Everything in Elite Mentorship included</li>
-              <li>Direct trade journal critiques by your mentor</li>
-              <li>Twice-weekly 1-on-1 live call check-ins</li>
+              <li class="on">Telegram community access</li>
+              <li class="on">Weekly market outlook</li>
+              <li class="on">Access to core curriculum</li>
+              <li class="on">Live session access</li>
+              <li class="on">Premarket analysis &amp; trade journaling tool (full version, with entry models)</li>
+              <li class="on">Trade journal review</li>
+              <li class="on">Weekly live Q&amp;A</li>
+              <li class="on">Direct mentor messaging</li>
+              <li class="on">1-on-1 coaching calls</li>
+              <li class="on">Access to other tools</li>
+              <li class="on">Priority support</li>
             </ul>
             <a href="#contact" class="btn btn-ghost w-full">Apply for Consideration</a>
           </article>
@@ -355,9 +402,10 @@
             <label for="interest">Program of Interest</label>
             <select id="interest" name="interest">
               <option value="">Select a program…</option>
-              <option value="Starter Program">Starter — Foundation</option>
-              <option value="Elite Mentorship">Elite Mentorship — Hands-On Coaching</option>
-              <option value="1-on-1 Coaching">1-on-1 Coaching — By Application Only</option>
+              <option value="Starter">Starter — Foundation</option>
+              <option value="Growth">Growth — Structured Coaching</option>
+              <option value="Pro">Pro — Full Mentorship</option>
+              <option value="Elite">Elite — By Application Only</option>
             </select>
             <span class="form-error" aria-live="polite"></span>
           </div>
