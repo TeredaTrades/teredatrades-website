@@ -101,16 +101,20 @@
     "https://script.google.com/macros/s/AKfycbxpuKqhrmaqVatXvACHxsYX19lXSxZyrnlrcMWVoOuGs_cQtDVxTq5h-zObs5Qaug7F/exec";
   const RECAPTCHA_SITE_KEY = "6LfKOD8tAAAAAJS6012DV0y8o_j3lKTuXTE1ajW_";
 
-function getRecaptchaToken() {
-  return new Promise((resolve, reject) => {
-    grecaptcha.ready(() => {
-      grecaptcha
-        .execute(RECAPTCHA_SITE_KEY, { action: "submit" })
-        .then(resolve)
-        .catch(reject);
+  function getRecaptchaToken() {
+    return new Promise((resolve, reject) => {
+      if (typeof grecaptcha === "undefined") {
+        reject(new Error("grecaptcha is not available"));
+        return;
+      }
+      grecaptcha.ready(() => {
+        grecaptcha
+          .execute(RECAPTCHA_SITE_KEY, { action: "submit" })
+          .then(resolve)
+          .catch(reject);
+      });
     });
-  });
-}
+  }
 
   // Maps this form's field names to HubSpot's internal property names
   const hubspotFieldMap = {
@@ -148,19 +152,35 @@ function getRecaptchaToken() {
       if (field.classList.contains("error")) validateField(field);
     });
   });
-const messageField = document.getElementById("message");
-const messageCount = document.getElementById("messageCount");
-if (messageField && messageCount) {
-  messageField.addEventListener("input", () => {
-    messageCount.textContent = `${messageField.value.length} / 900`;
-  });
-}
+
+  const messageField = document.getElementById("message");
+  const messageCount = document.getElementById("messageCount");
+  if (messageField && messageCount) {
+    messageField.addEventListener("input", () => {
+      messageCount.textContent = `${messageField.value.length} / 900`;
+    });
+  }
+
   function showToast(message) {
     if (!toast) return;
     toast.textContent = message;
     toast.classList.add("show");
     setTimeout(() => toast.classList.remove("show"), 4000);
   }
+
+  // Ref number is generated per submission and read by the copy button at
+  // click time, so the copy listener only needs to be attached once — no
+  // more stacking duplicate listeners across repeated submissions.
+  let currentRefNumber = "";
+  document.getElementById("copyBtn")?.addEventListener("click", () => {
+    navigator.clipboard.writeText(currentRefNumber).then(() => {
+      const label = document.getElementById("copyLabel");
+      if (label) {
+        label.textContent = "Copied!";
+        setTimeout(() => { label.textContent = "Copy"; }, 2000);
+      }
+    });
+  });
 
   form?.addEventListener("submit", async (e) => {
     e.preventDefault();
@@ -180,46 +200,56 @@ if (messageField && messageCount) {
       submitBtn.textContent = "Submitting…";
     }
 
-    const hubspotFields = Object.entries(data)
-      .filter(([key]) => hubspotFieldMap[key])
-      .map(([key, value]) => ({
-        objectTypeId: "0-1", // Contacts
-        name: hubspotFieldMap[key],
-        value,
-      }));
-
-    // Grab the HubSpot tracking cookie (hutk) if present, so the submission
-    // is associated with this visitor. Missing this is the most common
-    // cause of partial/odd behavior with the Forms API.
-    function getHubspotUtk() {
-      const match = document.cookie.match(/(?:^|;\s*)hubspotutk=([^;]+)/);
-      return match ? match[1] : undefined;
-    }
-
-    const hutk = getHubspotUtk();
-
-    // Generate reference number BEFORE submitting, so it can be sent
-    // along with the rest of the data to Sheets.
-    const now = new Date();
-    const mm = String(now.getMonth() + 1).padStart(2, '0');
-    const dd = String(now.getDate()).padStart(2, '0');
-    const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ0123456789';
-function secureRandomChars(length) {
-  const randomValues = new Uint32Array(length);
-  crypto.getRandomValues(randomValues);
-  let result = '';
-  for (let i = 0; i < length; i++) {
-    result += chars[randomValues[i] % chars.length];
-  }
-  return result;
-}
-const rand = secureRandomChars(8);
-const refNumber = `TTW-${mm}${dd}-${rand}`;
-data.referenceNumber = refNumber;
-    
-const token = await getRecaptchaToken();
-data.recaptchaToken = token;
     try {
+      const hubspotFields = Object.entries(data)
+        .filter(([key]) => hubspotFieldMap[key])
+        .map(([key, value]) => ({
+          objectTypeId: "0-1", // Contacts
+          name: hubspotFieldMap[key],
+          value,
+        }));
+
+      // Grab the HubSpot tracking cookie (hutk) if present, so the submission
+      // is associated with this visitor. Missing this is the most common
+      // cause of partial/odd behavior with the Forms API.
+      function getHubspotUtk() {
+        const match = document.cookie.match(/(?:^|;\s*)hubspotutk=([^;]+)/);
+        return match ? match[1] : undefined;
+      }
+
+      const hutk = getHubspotUtk();
+
+      // Generate reference number BEFORE submitting, so it can be sent
+      // along with the rest of the data to Sheets.
+      const now = new Date();
+      const mm = String(now.getMonth() + 1).padStart(2, '0');
+      const dd = String(now.getDate()).padStart(2, '0');
+      const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ0123456789';
+      function secureRandomChars(length) {
+        const randomValues = new Uint32Array(length);
+        crypto.getRandomValues(randomValues);
+        let result = '';
+        for (let i = 0; i < length; i++) {
+          result += chars[randomValues[i] % chars.length];
+        }
+        return result;
+      }
+      const rand = secureRandomChars(8);
+      const refNumber = `TTW-${mm}${dd}-${rand}`;
+      data.referenceNumber = refNumber;
+
+      // reCAPTCHA failures (ad blockers, blocked script, network issues)
+      // are common and must not block the whole submission — fall back to
+      // submitting without a token rather than throwing before either
+      // backend request is attempted.
+      let token = null;
+      try {
+        token = await getRecaptchaToken();
+      } catch (recaptchaErr) {
+        console.error("reCAPTCHA unavailable, continuing without it:", recaptchaErr);
+      }
+      data.recaptchaToken = token;
+
       // Fire both submissions in parallel. Each is independently wrapped
       // so a failure in one (e.g. HubSpot dropping a field) never blocks
       // or hides the result of the other — the visitor sees one outcome,
@@ -237,11 +267,11 @@ data.recaptchaToken = token;
         }),
       });
 
-     const sheetsPromise = fetch(SHEETS_ENDPOINT, {
-  method: "POST",
-  headers: { "Content-Type": "text/plain;charset=utf-8" },
-  body: JSON.stringify({ ...data }),
-});
+      const sheetsPromise = fetch(SHEETS_ENDPOINT, {
+        method: "POST",
+        headers: { "Content-Type": "text/plain;charset=utf-8" },
+        body: JSON.stringify({ ...data }),
+      });
 
       const [hubspotResult, sheetsResult] = await Promise.allSettled([
         hubspotPromise,
@@ -264,19 +294,12 @@ data.recaptchaToken = token;
         throw new Error("Both submission targets failed.");
       }
 
+      currentRefNumber = refNumber;
       document.getElementById('refNumber').textContent = refNumber;
       form.style.display = 'none';
       const confirmation = document.getElementById('confirmation');
       confirmation.hidden = false;
       confirmation.scrollIntoView({ behavior: 'smooth', block: 'start' });
-
-      document.getElementById('copyBtn').addEventListener('click', () => {
-        navigator.clipboard.writeText(refNumber).then(() => {
-          const label = document.getElementById('copyLabel');
-          label.textContent = 'Copied!';
-          setTimeout(() => { label.textContent = 'Copy'; }, 2000);
-        });
-      });
 
       form.reset();
       fields.forEach((field) => showError(field, ""));
