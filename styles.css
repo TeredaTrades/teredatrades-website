@@ -1160,3 +1160,72 @@
   .faq-answer { padding: 0 1.25rem 1.25rem; }
   .faq-cta { padding: 2rem; }
 }
+
+/* ==========================================================================
+   AD SLOTS — sponsor/AdSense placements (website/homepage-ad-slots)
+   ========================================================================== */
+.ad-slot {
+  padding: 3rem 0;
+}
+
+.ad-slot .container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.ad-unit {
+  width: 100%;
+  max-width: 728px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.ad-unit-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.65rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--text-dark);
+}
+
+.ad-unit-direct-link {
+  display: block;
+  width: 100%;
+  line-height: 0;
+  border: 1px solid var(--border-color);
+  border-radius: 0.75rem;
+  overflow: hidden;
+  background-color: var(--bg-surface);
+  transition: border-color 0.2s ease;
+}
+
+.ad-unit-direct-link:hover {
+  border-color: rgba(212, 163, 64, 0.35);
+}
+
+.ad-unit-direct-img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+/* An empty sponsor slot (no creative wired up yet) hides itself completely
+   — label included — instead of showing a "Sponsored" tag over a
+   broken-image icon or blank box. This is what keeps a slot invisible
+   until someone drops in a real creative. If an AdSense unit is also
+   uncommented in this same slot, only this empty direct block disappears;
+   the AdSense unit is unaffected. */
+.ad-unit--direct:has(img[src=""]) {
+  display: none;
+}
+
+.ad-unit--adsense {
+  width: 100%;
+  max-width: 728px;
+  min-height: 90px;
+}

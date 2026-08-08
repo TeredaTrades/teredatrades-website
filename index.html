@@ -71,6 +71,24 @@
   <link rel="stylesheet" href="styles.css" />
   <link rel="icon" href="assets/logo.png" type="image/png" />
   <script src="https://www.google.com/recaptcha/api.js?render=6LfKOD8tAAAAAJS6012DV0y8o_j3lKTuXTE1ajW_"></script>
+
+  <!--
+    ADSENSE LOADER — commented out on purpose.
+    Once you have a real AdSense publisher account:
+      1. Replace ca-pub-XXXXXXXXXXXXXXXX below with your real client ID.
+      2. Uncomment this <script> tag.
+      3. Do the same in each <ins class="adsbygoogle"> block further down
+         (there are two ad slots on this page, each with its own commented
+         AdSense unit).
+      4. Add an ads.txt file at the site root declaring that publisher ID
+         (AdSense requires this or it won't serve ads reliably) — not
+         included here since it's a site-root file, not part of this page.
+    Leaving this active with a placeholder ID will just fail silently /
+    throw console errors, so it stays commented until you're ready.
+  -->
+  <!--
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXXXXXX" crossorigin="anonymous"></script>
+  -->
 </head>
 <body>
   <header class="site-header" id="top">
@@ -125,6 +143,40 @@
   <a href="https://t.me/TeredaTrades" target="_blank" class="btn btn-primary">Join the Free Community</a>
 </div>
         </div>
+      </div>
+    </section>
+
+    <!-- AD SLOT 1: after hero, before Concepts. Highest-visibility spot on
+         the page — first thing below the fold. Holds either/both a direct
+         sponsor creative and an AdSense unit; delete whichever you don't
+         use, or leave the unused one commented. -->
+    <section class="section ad-slot" id="ad-slot-hero" aria-label="Sponsored content">
+      <div class="container">
+        <div class="ad-unit ad-unit--direct" data-ad-slot="hero-bottom">
+          <span class="ad-unit-label">Sponsored</span>
+          <!-- DIRECT/SPONSOR AD: point href at the sponsor's page and src at
+               their creative (recommended size: 728x90 leaderboard, or
+               provide your own image and adjust). Leave src="" (as below)
+               to keep this slot invisible until a real creative is added —
+               the CSS above hides an empty-src link automatically. -->
+          <a href="#" class="ad-unit-direct-link" target="_blank" rel="noopener sponsored">
+            <img src="" alt="Sponsor" class="ad-unit-direct-img" width="728" height="90" />
+          </a>
+        </div>
+
+        <!-- ADSENSE UNIT — commented until you have a real client/slot ID.
+             See the loader-script comment in <head> for setup steps. -->
+        <!--
+        <div class="ad-unit ad-unit--adsense">
+          <ins class="adsbygoogle"
+               style="display:block"
+               data-ad-client="ca-pub-XXXXXXXXXXXXXXXX"
+               data-ad-slot="XXXXXXXXXX"
+               data-ad-format="auto"
+               data-full-width-responsive="true"></ins>
+          <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+        </div>
+        -->
       </div>
     </section>
 
@@ -369,6 +421,31 @@
       </div>
     </section>
 
+    <!-- AD SLOT 2: after Results, before the application form. Second
+         natural break in the page — doesn't sit between the pitch sections. -->
+    <section class="section ad-slot" id="ad-slot-results" aria-label="Sponsored content">
+      <div class="container">
+        <div class="ad-unit ad-unit--direct" data-ad-slot="results-bottom">
+          <span class="ad-unit-label">Sponsored</span>
+          <a href="#" class="ad-unit-direct-link" target="_blank" rel="noopener sponsored">
+            <img src="" alt="Sponsor" class="ad-unit-direct-img" width="728" height="90" />
+          </a>
+        </div>
+
+        <!--
+        <div class="ad-unit ad-unit--adsense">
+          <ins class="adsbygoogle"
+               style="display:block"
+               data-ad-client="ca-pub-XXXXXXXXXXXXXXXX"
+               data-ad-slot="XXXXXXXXXX"
+               data-ad-format="auto"
+               data-full-width-responsive="true"></ins>
+          <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+        </div>
+        -->
+      </div>
+    </section>
+
     <!-- SECTION: APPLICATION / CONTACT FORM -->
     <section class="section contact" id="contact">
       <div class="container form-container">
@@ -458,6 +535,7 @@
 
         <div id="toast" role="status" aria-live="polite"></div>
       </div>
+    </div>
     </section>
   </main>
 

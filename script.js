@@ -331,7 +331,7 @@
 
   document
     .querySelectorAll(
-      ".concept-card, .timeline-item, .tier-card, .testimonial, .contact-form"
+      ".concept-card, .timeline-item, .tier-card, .testimonial, .contact-form, .ad-unit"
     )
     .forEach((el) => {
       el.style.opacity = "0";
