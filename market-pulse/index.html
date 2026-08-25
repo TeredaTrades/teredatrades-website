@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="description" content="Today's high-impact macro events and news, sorted to the asset you actually trade. Free tool from Tereda Trades." />
+<title>Market Pulse | Tereda Trades</title>
+<link rel="canonical" href="https://teredatrades.com/market-pulse/" />
+<meta name="robots" content="index, follow" />
+
+<meta property="og:title" content="Market Pulse | Tereda Trades" />
+<meta property="og:description" content="Today's high-impact macro events and news, sorted to the asset you actually trade." />
+<meta property="og:url" content="https://teredatrades.com/market-pulse/" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="Tereda Trades" />
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+
+<style>
+  :root{
+    --bg-color:#0B0E14;
+    --bg-surface:#11151F;
+    --bg-surface-alt:#141926;
+    --text-main:#E7E9EE;
+    --text-muted:#7B8298;
+    --text-dark:#454C60;
+    --border-color:#232A3B;
+    --border-soft:#1B2130;
+    --accent:#D4A340;
+    --accent-hover:#E3B65B;
+    --accent-ink:#181205;
+    --teal:#4FB6A8;
+
+    --impact-high:#D4574A;
+    --impact-medium:#D4A340;
+    --impact-low:#3A4152;
+  }
+
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--bg-color);
+    color:var(--text-main);
+    font-family:'Inter',-apple-system,sans-serif;
+    -webkit-font-smoothing:antialiased;
+    line-height:1.5;
+  }
+  a{color:inherit;}
+  .mono{font-family:'JetBrains Mono',monospace;}
+  .heading{font-family:'Space Grotesk',sans-serif;}
+
+  .wrap{max-width:1080px;margin:0 auto;padding:0 20px;}
+
+  /* ---------- Top bar ---------- */
+  .topbar{
+    border-bottom:1px solid var(--border-soft);
+    padding:16px 0;
+  }
+  .topbar .wrap{display:flex;align-items:center;justify-content:space-between;gap:16px;}
+  .brand{display:flex;align-items:center;gap:10px;font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:15px;text-decoration:none;color:var(--text-main);}
+  .brand .dot{width:8px;height:8px;border-radius:50%;background:var(--accent);box-shadow:0 0 10px var(--accent);}
+  .topbar nav a{font-size:13px;color:var(--text-muted);text-decoration:none;}
+  .topbar nav a:hover{color:var(--text-main);}
+
+  /* ---------- Hero ---------- */
+  .hero{padding:44px 0 28px;border-bottom:1px solid var(--border-soft);}
+  .eyebrow{
+    font-family:'JetBrains Mono',monospace;
+    font-size:11px;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    color:var(--teal);
+    margin-bottom:10px;
+    display:flex;align-items:center;gap:8px;
+  }
+  .eyebrow .live-pulse{
+    width:6px;height:6px;border-radius:50%;background:var(--teal);
+    animation:pulse 2s ease-in-out infinite;
+  }
+  @keyframes pulse{0%,100%{opacity:1;transform:scale(1);}50%{opacity:.35;transform:scale(1.6);}}
+  h1{
+    font-family:'Space Grotesk',sans-serif;
+    font-size:clamp(28px,4.5vw,42px);
+    font-weight:700;
+    margin:0 0 10px;
+    letter-spacing:-0.01em;
+  }
+  .hero p{color:var(--text-muted);font-size:15px;max-width:560px;margin:0;}
+
+  /* ---------- Asset picker ---------- */
+  .asset-picker{padding:22px 0 6px;}
+  .asset-picker-label{font-size:12px;color:var(--text-muted);margin-bottom:10px;font-weight:500;}
+  .pills{display:flex;flex-wrap:wrap;gap:8px;}
+  .pill{
+    font-family:'Inter',sans-serif;
+    font-size:13px;font-weight:500;
+    padding:8px 14px;
+    border-radius:999px;
+    border:1px solid var(--border-color);
+    background:var(--bg-surface);
+    color:var(--text-muted);
+    cursor:pointer;
+    transition:border-color .15s, color .15s, background .15s;
+    white-space:nowrap;
+  }
+  .pill:hover{border-color:var(--text-dark);color:var(--text-main);}
+  .pill.active{
+    background:var(--accent);
+    border-color:var(--accent);
+    color:var(--accent-ink);
+    font-weight:600;
+  }
+
+  /* ---------- Layout ---------- */
+  .layout{display:grid;grid-template-columns:1fr;gap:28px;padding:28px 0 64px;}
+  @media (min-width:860px){
+    .layout{grid-template-columns:1.55fr 1fr;align-items:start;}
+  }
+
+  .card{
+    background:var(--bg-surface);
+    border:1px solid var(--border-soft);
+    border-radius:14px;
+    padding:20px;
+  }
+  .card + .card{margin-top:20px;}
+  .card-title{
+    font-family:'Space Grotesk',sans-serif;
+    font-size:15px;font-weight:600;
+    margin:0 0 14px;
+    display:flex;align-items:center;justify-content:space-between;
+  }
+
+  /* ---------- Countdown ---------- */
+  .countdown-card{
+    background:linear-gradient(160deg, var(--bg-surface-alt), var(--bg-surface));
+    border:1px solid var(--border-color);
+  }
+  .countdown-label{font-size:12px;color:var(--text-muted);margin-bottom:4px;}
+  .countdown-event{font-family:'Space Grotesk',sans-serif;font-size:18px;font-weight:600;margin-bottom:14px;}
+  .countdown-clock{display:flex;gap:14px;}
+  .countdown-unit{text-align:center;}
+  .countdown-num{font-family:'JetBrains Mono',monospace;font-size:26px;font-weight:600;color:var(--accent);}
+  .countdown-unit-label{font-size:10px;color:var(--text-muted);text-transform:uppercase;letter-spacing:.06em;}
+
+  /* ---------- Filters row ---------- */
+  .filters{display:flex;gap:8px;align-items:center;flex-wrap:wrap;}
+  .chip{
+    font-size:11px;font-family:'JetBrains Mono',monospace;
+    padding:5px 10px;border-radius:6px;
+    border:1px solid var(--border-color);
+    color:var(--text-muted);cursor:pointer;
+    user-select:none;
+  }
+  .chip.on{color:var(--text-main);border-color:var(--text-dark);}
+  .chip .sw{display:inline-block;width:7px;height:7px;border-radius:50%;margin-right:6px;vertical-align:middle;}
+
+  /* ---------- Event timeline (the signature element) ---------- */
+  .rail-list{list-style:none;margin:0;padding:0;}
+  .rail-item{
+    position:relative;
+    padding:12px 0 12px 16px;
+    border-left:3px solid var(--border-color);
+    margin-bottom:2px;
+  }
+  .rail-item.relevant{border-left-color:var(--accent);}
+  .rail-item.global{border-left-color:var(--teal);}
+  .rail-item.dim{opacity:.42;}
+  .rail-item.dim:hover{opacity:.85;}
+
+  .rail-top{display:flex;align-items:baseline;justify-content:space-between;gap:10px;}
+  .rail-time{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--text-muted);white-space:nowrap;}
+  .rail-title{font-size:14px;font-weight:500;margin:3px 0 4px;}
+  .rail-meta{display:flex;gap:8px;align-items:center;flex-wrap:wrap;}
+  .tag{
+    font-family:'JetBrains Mono',monospace;
+    font-size:10px;letter-spacing:.03em;
+    padding:2px 7px;border-radius:5px;
+    border:1px solid var(--border-color);
+    color:var(--text-muted);
+  }
+  .tag.impact-High{color:var(--impact-high);border-color:var(--impact-high);}
+  .tag.impact-Medium{color:var(--impact-medium);border-color:var(--impact-medium);}
+  .tag.why{color:var(--accent);border-color:transparent;background:rgba(212,163,64,0.1);}
+  .tag.global-why{color:var(--teal);border-color:transparent;background:rgba(79,182,168,0.1);}
+  .tag.weekend{color:#E38B6B;border-color:#E38B6B;}
+  .rail-vals{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text-dark);margin-top:2px;}
+
+  .show-more{
+    display:block;width:100%;text-align:center;
+    background:none;border:1px dashed var(--border-color);
+    color:var(--text-muted);font-size:12px;font-family:'Inter',sans-serif;
+    padding:10px;border-radius:8px;cursor:pointer;margin-top:10px;
+  }
+  .show-more:hover{border-color:var(--text-dark);color:var(--text-main);}
+
+  /* ---------- Weekend note ---------- */
+  .weekend-note{
+    display:none;
+    background:rgba(227,139,107,0.08);
+    border:1px solid rgba(227,139,107,0.35);
+    border-radius:10px;
+    padding:12px 14px;
+    font-size:12.5px;
+    color:#E8B39D;
+    margin-bottom:16px;
+  }
+  .weekend-note.show{display:block;}
+  .weekend-note strong{color:#F0C4B0;}
+
+  /* ---------- News ---------- */
+  .news-item{padding:11px 0;border-bottom:1px solid var(--border-soft);}
+  .news-item:last-child{border-bottom:none;}
+  .news-source{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--teal);letter-spacing:.04em;text-transform:uppercase;}
+  .news-title{font-size:13.5px;font-weight:500;margin:4px 0;text-decoration:none;display:block;}
+  .news-title:hover{color:var(--accent);}
+  .news-time{font-size:11px;color:var(--text-dark);}
+
+  /* ---------- Sponsor slot ---------- */
+  .sponsor-card{
+    border-style:dashed;
+    text-align:center;
+    color:var(--text-dark);
+    font-size:12px;
+    padding:26px 16px;
+  }
+  .sponsor-card .sponsor-label{
+    font-family:'JetBrains Mono',monospace;
+    font-size:10px;letter-spacing:.1em;text-transform:uppercase;
+    color:var(--text-muted);margin-bottom:6px;
+  }
+
+  .empty-note{color:var(--text-muted);font-size:13px;padding:8px 0;}
+  .loading-note{color:var(--text-muted);font-size:13px;padding:20px 0;text-align:center;}
+
+  footer{border-top:1px solid var(--border-soft);padding:22px 0 40px;}
+  footer .wrap{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;}
+  footer p{font-size:12px;color:var(--text-dark);margin:0;}
+  footer a{font-size:12px;color:var(--text-muted);text-decoration:none;}
+  footer a:hover{color:var(--text-main);}
+
+  @media (prefers-reduced-motion: reduce){
+    .live-pulse{animation:none;}
+  }
+</style>
+</head>
+<body>
+
+  <div class="topbar">
+    <div class="wrap">
+      <a class="brand" href="https://teredatrades.com/"><span class="dot"></span> TEREDA TRADES</a>
+      <nav><a href="https://teredatrades.com/">← Back to site</a></nav>
+    </div>
+  </div>
+
+  <div class="hero">
+    <div class="wrap">
+      <div class="eyebrow"><span class="live-pulse"></span> UPDATED EVERY 6 HOURS</div>
+      <h1>Market Pulse</h1>
+      <p>Today's high-impact macro events and news — sorted to the asset you actually trade, not just dumped in one long list.</p>
+    </div>
+  </div>
+
+  <div class="wrap">
+    <div class="asset-picker">
+      <div class="asset-picker-label">I mainly trade —</div>
+      <div class="pills" id="assetPills"></div>
+    </div>
+
+    <div class="layout">
+      <!-- LEFT: events -->
+      <div>
+        <div class="weekend-note" id="weekendNote">
+          <strong>Weekend risk:</strong> crypto trades 24/7, so weekend headlines can move BTC/ETH before forex and indices even reopen Monday. Events/news landing on Sat–Sun are flagged below.
+        </div>
+
+        <div class="card">
+          <div class="card-title">
+            <span id="eventsTitle">Events</span>
+            <div class="filters" id="impactFilters"></div>
+          </div>
+          <div id="relevantEvents"><div class="loading-note">Loading events…</div></div>
+
+          <div id="otherEventsWrap" style="display:none;">
+            <button class="show-more" id="showMoreBtn">Show other events (not tied to this asset)</button>
+            <ul class="rail-list" id="otherEvents" style="display:none;"></ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- RIGHT: countdown + news + sponsor -->
+      <div>
+        <div class="card countdown-card">
+          <div class="card-title">Next high-impact event</div>
+          <div id="countdownBody"><div class="loading-note">—</div></div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">Headlines <span id="newsAssetLabel" style="color:var(--text-muted);font-weight:400;font-size:11px;"></span></div>
+          <div id="newsList"><div class="loading-note">Loading headlines…</div></div>
+        </div>
+
+        <div class="card sponsor-card">
+          <div class="sponsor-label">Sponsored</div>
+          Partner slot — brokers, prop firms, and tools relevant to this audience. <a href="https://teredatrades.com/partner.html" style="color:var(--accent);">Get in touch →</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <div class="wrap">
+      <p>Data: ForexFactory economic calendar + aggregated news, refreshed every 6h. Not financial advice.</p>
+      <a href="https://teredatrades.com/faq.html">FAQ</a>
+    </div>
+  </footer>
+
+<script>
+(function(){
+  const CALENDAR_URL = "https://raw.githubusercontent.com/TeredaTrades/teredatrades-news-scraper/main/output/calendar.json";
+  const NEWS_URL = "https://raw.githubusercontent.com/TeredaTrades/teredatrades-news-scraper/main/output/rss_items.json";
+
+  // ---- Asset -> currency relevance map ----
+  // "currencies" = ForexFactory country codes that move this asset directly.
+  // "keywords" = used to match free-text headlines that have no country tag.
+  const KW = {
+    EUR: ["EUR","euro","ECB","eurozone","European Central Bank"],
+    USD: ["USD","dollar","Fed ","FOMC","Federal Reserve","U.S.","US ","Treasury","Powell"],
+    GBP: ["GBP","pound","BoE","Bank of England","sterling","UK "],
+    JPY: ["JPY","yen","BoJ","Bank of Japan"],
+    AUD: ["AUD","Australian dollar","RBA","Australia"],
+    NZD: ["NZD","New Zealand dollar","RBNZ","New Zealand"],
+    CAD: ["CAD","Canadian dollar","BoC","Bank of Canada","Canada"],
+    CHF: ["CHF","Swiss franc","SNB","Switzerland"],
+    CNY: ["CNY","yuan","PBoC","China"],
+    CRYPTO: ["bitcoin","BTC","ethereum","ETH","crypto"]
+  };
+
+  const ASSETS = [
+    { id:"EURUSD", label:"EUR/USD", currencies:["EUR","USD"], kw:[...KW.EUR,...KW.USD] },
+    { id:"GBPUSD", label:"GBP/USD", currencies:["GBP","USD"], kw:[...KW.GBP,...KW.USD] },
+    { id:"USDJPY", label:"USD/JPY", currencies:["USD","JPY"], kw:[...KW.USD,...KW.JPY] },
+    { id:"AUDUSD", label:"AUD/USD", currencies:["AUD","USD"], kw:[...KW.AUD,...KW.USD] },
+    { id:"USDCAD", label:"USD/CAD", currencies:["USD","CAD"], kw:[...KW.USD,...KW.CAD] },
+    { id:"NZDUSD", label:"NZD/USD", currencies:["NZD","USD"], kw:[...KW.NZD,...KW.USD] },
+    { id:"XAUUSD", label:"Gold (XAU/USD)", currencies:["USD"], kw:[...KW.USD,"gold","XAU","bullion","safe haven"] },
+    { id:"USIDX", label:"US Indices", currencies:["USD"], kw:[...KW.USD,"S&P","Dow","Nasdaq","stocks","equities"] },
+    { id:"EUIDX", label:"EU / Dutch Indices", currencies:["EUR"], kw:[...KW.EUR,"DAX","CAC","AEX","European stocks"] },
+    { id:"CRYPTO", label:"Crypto (BTC/ETH)", currencies:["USD"], kw:[...KW.USD,...KW.CRYPTO], weekendSensitive:true }
+  ];
+
+  let selectedAsset = null; // null = "all events, no asset filter"
+  let impactFilter = new Set(["High","Medium"]);
+  let calendarData = [];
+  let newsData = [];
+
+  // ---------- Asset pills ----------
+  const pillsWrap = document.getElementById("assetPills");
+  function renderPills(){
+    pillsWrap.innerHTML = "";
+    const allPill = document.createElement("div");
+    allPill.className = "pill" + (selectedAsset===null ? " active" : "");
+    allPill.textContent = "All assets";
+    allPill.onclick = () => { selectedAsset = null; onAssetChange(); };
+    pillsWrap.appendChild(allPill);
+
+    ASSETS.forEach(a=>{
+      const p = document.createElement("div");
+      p.className = "pill" + (selectedAsset===a.id ? " active" : "");
+      p.textContent = a.label;
+      p.onclick = () => { selectedAsset = a.id; onAssetChange(); };
+      pillsWrap.appendChild(p);
+    });
+  }
+
+  // ---------- Impact filter chips ----------
+  const impactWrap = document.getElementById("impactFilters");
+  const IMPACT_COLORS = { High:"var(--impact-high)", Medium:"var(--impact-medium)", Low:"var(--impact-low)" };
+  function renderImpactChips(){
+    impactWrap.innerHTML = "";
+    ["High","Medium","Low"].forEach(level=>{
+      const c = document.createElement("div");
+      c.className = "chip" + (impactFilter.has(level) ? " on" : "");
+      c.innerHTML = `<span class="sw" style="background:${IMPACT_COLORS[level]}"></span>${level}`;
+      c.onclick = () => {
+        if(impactFilter.has(level)) impactFilter.delete(level); else impactFilter.add(level);
+        renderImpactChips();
+        renderEvents();
+      };
+      impactWrap.appendChild(c);
+    });
+  }
+
+  function isWeekend(dateStr){
+    const d = new Date(dateStr).getDay();
+    return d===0 || d===6;
+  }
+
+  function fmtTime(dateStr){
+    const d = new Date(dateStr);
+    return d.toLocaleString(undefined, { weekday:"short", month:"short", day:"numeric", hour:"numeric", minute:"2-digit" });
+  }
+
+  function currentAsset(){ return ASSETS.find(a=>a.id===selectedAsset) || null; }
+
+  function eventRelevance(evt, asset){
+    if(!asset) return "neutral";
+    if(evt.country === "All") return "global";
+    if(asset.currencies.includes(evt.country)) return "relevant";
+    return "dim";
+  }
+
+  function onAssetChange(){
+    renderPills();
+    document.getElementById("weekendNote").classList.toggle("show", !!(currentAsset() && currentAsset().weekendSensitive));
+    document.getElementById("eventsTitle").textContent = selectedAsset ? `Events — ${currentAsset().label}` : "Events";
+    document.getElementById("newsAssetLabel").textContent = selectedAsset ? `· filtered for ${currentAsset().label}` : "";
+    renderEvents();
+    renderNews();
+  }
+
+  function eventRowHTML(evt, cls){
+    const asset = currentAsset();
+    const weekendFlag = asset && asset.weekendSensitive && isWeekend(evt.date);
+    let whyTag = "";
+    if(cls === "relevant") whyTag = `<span class="tag why">directly moves ${asset.label}</span>`;
+    if(cls === "global") whyTag = `<span class="tag global-why">affects all markets</span>`;
+    return `
+      <li class="rail-item ${cls}">
+        <div class="rail-top">
+          <div>
+            <div class="rail-title">${escapeHtml(evt.title)}</div>
+          </div>
+          <div class="rail-time">${fmtTime(evt.date)}</div>
+        </div>
+        <div class="rail-meta">
+          <span class="tag">${evt.country}</span>
+          <span class="tag impact-${evt.impact}">${evt.impact}</span>
+          ${whyTag}
+          ${weekendFlag ? '<span class="tag weekend">weekend</span>' : ""}
+        </div>
+        ${(evt.forecast || evt.previous) ? `<div class="rail-vals">forecast ${evt.forecast || "—"} · previous ${evt.previous || "—"}</div>` : ""}
+      </li>`;
+  }
+
+  function escapeHtml(s){
+    return (s||"").replace(/[&<>"']/g, c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+  }
+
+  function renderEvents(){
+    const asset = currentAsset();
+    const now = new Date();
+    const filtered = calendarData
+      .filter(e => impactFilter.has(e.impact))
+      .filter(e => new Date(e.date) >= new Date(now.getTime() - 6*3600*1000)) // keep recent-past 6h + future
+      .sort((a,b)=> new Date(a.date) - new Date(b.date));
+
+    const relevantBucket = [];
+    const otherBucket = [];
+
+    filtered.forEach(e=>{
+      const cls = eventRelevance(e, asset);
+      if(!asset || cls==="relevant" || cls==="global") relevantBucket.push({e, cls: cls==="neutral" ? "neutral" : cls});
+      else otherBucket.push({e, cls});
+    });
+
+    const relEl = document.getElementById("relevantEvents");
+    if(relevantBucket.length===0){
+      relEl.innerHTML = `<div class="empty-note">No matching events in the selected impact range right now.</div>`;
+    } else {
+      relEl.innerHTML = `<ul class="rail-list">${relevantBucket.map(x=>eventRowHTML(x.e, x.cls)).join("")}</ul>`;
+    }
+
+    const otherWrap = document.getElementById("otherEventsWrap");
+    const otherList = document.getElementById("otherEvents");
+    if(asset && otherBucket.length>0){
+      otherWrap.style.display = "block";
+      otherList.innerHTML = otherBucket.map(x=>eventRowHTML(x.e,"dim")).join("");
+    } else {
+      otherWrap.style.display = "none";
+    }
+
+    renderCountdown(asset, filtered);
+  }
+
+  function renderCountdown(asset, filtered){
+    const now = new Date();
+    const pool = calendarData.filter(e => e.impact==="High" && new Date(e.date) > now);
+    let candidates = pool;
+    if(asset){
+      const direct = pool.filter(e => e.country==="All" || asset.currencies.includes(e.country));
+      if(direct.length>0) candidates = direct;
+    }
+    candidates.sort((a,b)=> new Date(a.date)-new Date(b.date));
+    const body = document.getElementById("countdownBody");
+    if(candidates.length===0){
+      body.innerHTML = `<div class="empty-note">No upcoming High-impact events found for this window.</div>`;
+      return;
+    }
+    const next = candidates[0];
+    body.innerHTML = `
+      <div class="countdown-label">${next.country} · High impact</div>
+      <div class="countdown-event">${escapeHtml(next.title)}</div>
+      <div class="countdown-clock" id="clockNums"></div>
+    `;
+    tickCountdown(next.date);
+    clearInterval(window.__mpTimer);
+    window.__mpTimer = setInterval(()=>tickCountdown(next.date), 1000);
+  }
+
+  function tickCountdown(dateStr){
+    const target = new Date(dateStr).getTime();
+    const now = Date.now();
+    let diff = Math.max(0, target - now);
+    const d = Math.floor(diff/86400000); diff -= d*86400000;
+    const h = Math.floor(diff/3600000); diff -= h*3600000;
+    const m = Math.floor(diff/60000); diff -= m*60000;
+    const s = Math.floor(diff/1000);
+    const el = document.getElementById("clockNums");
+    if(!el) return;
+    el.innerHTML = [["D",d],["H",h],["M",m],["S",s]].map(([label,val])=>`
+      <div class="countdown-unit">
+        <div class="countdown-num">${String(val).padStart(2,"0")}</div>
+        <div class="countdown-unit-label">${label}</div>
+      </div>`).join("");
+  }
+
+  function renderNews(){
+    const asset = currentAsset();
+    const el = document.getElementById("newsList");
+    let items = [...newsData];
+    if(asset){
+      const kw = asset.kw.map(k=>k.toLowerCase());
+      const scored = items.map(n=>{
+        const hay = ((n.title||"") + " " + (n.summary||"")).toLowerCase();
+        const hit = kw.some(k=>hay.includes(k.toLowerCase()));
+        return {n, hit};
+      });
+      const matched = scored.filter(x=>x.hit).map(x=>x.n);
+      items = matched.length>0 ? matched : items.slice(0,6);
+    }
+    items = items.slice(0,8);
+    if(items.length===0){
+      el.innerHTML = `<div class="empty-note">No headlines available right now.</div>`;
+      return;
+    }
+    el.innerHTML = items.map(n=>{
+      const weekendFlag = asset && asset.weekendSensitive && n.published && isWeekend(n.published);
+      return `
+      <div class="news-item">
+        <div class="news-source">${escapeHtml(n.source||"")}${weekendFlag ? ' <span class="tag weekend" style="margin-left:6px;">weekend</span>' : ""}</div>
+        <a class="news-title" href="${n.link}" target="_blank" rel="noopener">${escapeHtml(n.title)}</a>
+        <div class="news-time">${n.published ? fmtTime(n.published) : ""}</div>
+      </div>`;
+    }).join("");
+  }
+
+  document.getElementById("showMoreBtn").addEventListener("click", function(){
+    const list = document.getElementById("otherEvents");
+    const showing = list.style.display === "block";
+    list.style.display = showing ? "none" : "block";
+    this.textContent = showing ? "Show other events (not tied to this asset)" : "Hide other events";
+  });
+
+  // ---------- Boot ----------
+  renderPills();
+  renderImpactChips();
+
+  Promise.all([
+    fetch(CALENDAR_URL).then(r=>r.json()),
+    fetch(NEWS_URL).then(r=>r.json())
+  ]).then(([cal, news])=>{
+    calendarData = cal;
+    newsData = (news && news.items) ? news.items.sort((a,b)=> new Date(b.published)-new Date(a.published)) : [];
+    renderEvents();
+    renderNews();
+  }).catch(err=>{
+    document.getElementById("relevantEvents").innerHTML = `<div class="empty-note">Couldn't load event data right now. Try refreshing.</div>`;
+    document.getElementById("newsList").innerHTML = `<div class="empty-note">Couldn't load headlines right now.</div>`;
+    console.error(err);
+  });
+})();
+</script>
+</body>
+</html>
