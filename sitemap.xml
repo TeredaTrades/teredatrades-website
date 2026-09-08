@@ -43,6 +43,12 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://teredatrades.com/articles/</loc>
+    <lastmod>2026-09-08</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://teredatrades.com/privacy.html</loc>
     <lastmod>2026-08-08</lastmod>
     <changefreq>yearly</changefreq>

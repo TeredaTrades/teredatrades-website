@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="description" content="Trading breakdowns, market structure explainers, and video walkthroughs from Tereda Trades." />
+<title>Articles | Tereda Trades</title>
+<link rel="canonical" href="https://teredatrades.com/articles/" />
+<meta name="robots" content="index, follow" />
+<meta property="og:title" content="Articles | Tereda Trades" />
+<meta property="og:description" content="Trading breakdowns, market structure explainers, and video walkthroughs from Tereda Trades." />
+<meta property="og:url" content="https://teredatrades.com/articles/" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="Tereda Trades" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/supabase/2.39.0/supabase.min.js"></script>
+<style>
+  :root{
+    --bg-color:#0B0E14; --bg-surface:#11151F; --bg-surface-alt:#141926;
+    --text-main:#E7E9EE; --text-muted:#7B8298; --border-color:#232A3B; --border-soft:#1B2130;
+    --accent:#D4A340; --accent-hover:#E3B65B; --accent-ink:#181205; --teal:#4FB6A8;
+  }
+  *{box-sizing:border-box;} html,body{margin:0;padding:0;}
+  body{background:var(--bg-color);color:var(--text-main);font-family:'Inter',-apple-system,sans-serif;line-height:1.5;}
+  a{color:inherit;text-decoration:none;}
+  .heading{font-family:'Space Grotesk',sans-serif;}
+  .wrap{max-width:900px;margin:0 auto;padding:0 20px;}
+  .topbar{border-bottom:1px solid var(--border-soft);padding:16px 0;}
+  .topbar .wrap{display:flex;align-items:center;justify-content:space-between;gap:16px;}
+  .brand{display:flex;align-items:center;gap:10px;font-weight:600;font-size:15px;}
+  .brand img{width:32px;height:32px;border-radius:6px;object-fit:cover;}
+  .topbar nav a{font-size:13px;color:var(--text-muted);margin-left:18px;}
+  .topbar nav a:hover{color:var(--text-main);}
+  .hero{padding:44px 0 20px;}
+  h1{font-size:clamp(26px,4vw,38px);font-weight:700;margin:0 0 8px;}
+  .hero p{color:var(--text-muted);font-size:15px;margin:0;}
+  .list{padding:24px 0 72px;display:flex;flex-direction:column;gap:16px;}
+  .card{
+    display:block;background:var(--bg-surface);border:1px solid var(--border-soft);
+    border-radius:14px;padding:20px 22px;transition:border-color .15s;
+  }
+  .card:hover{border-color:var(--accent);}
+  .card-title{font-family:'Space Grotesk',sans-serif;font-size:18px;font-weight:600;margin:0 0 6px;}
+  .card-excerpt{color:var(--text-muted);font-size:14px;margin:0 0 10px;}
+  .card-meta{font-size:12px;color:var(--teal);display:flex;align-items:center;gap:8px;}
+  .yt-tag{background:rgba(212,87,74,.15);color:#E27568;padding:2px 8px;border-radius:999px;font-weight:600;font-size:11px;}
+  .empty{color:var(--text-muted);padding:40px 0;text-align:center;}
+  footer{border-top:1px solid var(--border-soft);padding:24px 0;text-align:center;color:var(--text-muted);font-size:13px;}
+</style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="wrap">
+      <a href="/" class="brand"><img src="/assets/logo.png" alt="Tereda Trades" /> Tereda Trades</a>
+      <nav>
+        <a href="/">Home</a>
+        <a href="/market-pulse/">Market Pulse</a>
+        <a href="/articles/">Articles</a>
+      </nav>
+    </div>
+  </header>
+
+  <div class="wrap">
+    <div class="hero">
+      <h1 class="heading">Articles</h1>
+      <p>Trade breakdowns, market structure explainers, and video walkthroughs.</p>
+    </div>
+    <div class="list" id="list"><p class="empty">Loading…</p></div>
+  </div>
+
+  <footer>&copy; 2026 Tereda Trades. <a href="/">Back to home</a></footer>
+
+<script>
+const supabase = window.supabase.createClient(
+  'https://mvmosynzbawxeuqfyitj.supabase.co',
+  'sb_publishable_gfFVcf_Tf4cwsUY8DiUZSw_fF-wtwz'
+);
+
+async function load() {
+  const list = document.getElementById('list');
+  const { data, error } = await supabase
+    .from('articles')
+    .select('slug,title,excerpt,youtube_id,published_at,visibility')
+    .eq('status', 'published')
+    .in('visibility', ['website', 'both'])
+    .order('published_at', { ascending: false });
+
+  if (error) { list.innerHTML = `<p class="empty">Couldn't load articles right now.</p>`; return; }
+  if (!data.length) { list.innerHTML = `<p class="empty">No articles yet — check back soon.</p>`; return; }
+
+  list.innerHTML = data.map(a => `
+    <a class="card" href="/articles/article.html?slug=${encodeURIComponent(a.slug)}">
+      <div class="card-title">${escapeHtml(a.title)}</div>
+      ${a.excerpt ? `<p class="card-excerpt">${escapeHtml(a.excerpt)}</p>` : ''}
+      <div class="card-meta">
+        ${a.published_at ? new Date(a.published_at).toLocaleDateString(undefined,{year:'numeric',month:'short',day:'numeric'}) : ''}
+        ${a.youtube_id ? '<span class="yt-tag">▶ Video</span>' : ''}
+      </div>
+    </a>
+  `).join('');
+}
+
+function escapeHtml(s) {
+  const d = document.createElement('div');
+  d.textContent = s;
+  return d.innerHTML;
+}
+
+load();
+</script>
+</body>
+</html>
