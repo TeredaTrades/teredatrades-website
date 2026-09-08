@@ -20,8 +20,11 @@ const SITE_URL = 'https://teredatrades.com';
 // Public Supabase project + publishable key — these are already exposed
 // client-side in articles/index.html and articles/article.html, so it's
 // safe to read them here too (RLS restricts this key to published rows).
-const SUPABASE_URL = 'https://mvmosynzbawxeuqfyitj.supabase.co';
-const SUPABASE_KEY = 'sb_publishable_gfFVcf_Tf4cwsUY8DiUZSw_fF-wtwz';
+// If the key is domain-restricted in Supabase (so it 401s outside a
+// browser), set SUPABASE_KEY (and optionally SUPABASE_URL) as a repo
+// secret and it'll be used instead — see .github/workflows/generate-articles.yml.
+const SUPABASE_URL = process.env.SUPABASE_URL || 'https://mvmosynzbawxeuqfyitj.supabase.co';
+const SUPABASE_KEY = process.env.SUPABASE_KEY || 'sb_publishable_gfFVcf_Tf4cwsUY8DiUZSw_fF-wtwz';
 
 const SAFE_SLUG = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 
@@ -49,8 +52,6 @@ async function fetchArticles() {
     headers: {
       apikey: SUPABASE_KEY,
       Authorization: `Bearer ${SUPABASE_KEY}`,
-      Origin: SITE_URL,
-      Referer: `${SITE_URL}/`,
     },
   });
 
