@@ -49,6 +49,27 @@ jobs:
         if: steps.generate.outputs.exit_code != '0'
         run: exit 1
 
+      - name: Debug output (temporary)
+        run: |
+          {
+            echo "### generate step log"
+            cat /tmp/gen-output.log
+            echo "### pwd"
+            pwd
+            echo "### articles dir listing"
+            ls -la articles/ | head -50
+            echo "### git status"
+            git status --porcelain
+            echo "### word counts"
+            wc -l articles/index.html articles/article.html sitemap.xml 2>&1 || true
+          } > /tmp/debug.log 2>&1
+          cat /tmp/debug.log
+          BODY=$(tail -c 60000 /tmp/debug.log)
+          curl -s -X POST -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+            -H "Accept: application/vnd.github+json" \
+            "https://api.github.com/repos/${{ github.repository }}/issues" \
+            -d "$(jq -n --arg body "$BODY" '{title: "generate-articles debug run", body: $body, labels: ["automation-debug"]}')"
+
       - name: Commit and push if changed
         run: |
           git config user.name "github-actions[bot]"
