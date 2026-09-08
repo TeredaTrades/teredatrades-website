@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title id="pageTitle">Article | Tereda Trades</title>
+<meta name="robots" content="index, follow" />
+<meta name="description" id="metaDesc" content="Trading breakdowns and video walkthroughs from Tereda Trades." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/supabase/2.39.0/supabase.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/marked/12.0.0/marked.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/3.0.9/purify.min.js"></script>
+<style>
+  :root{
+    --bg-color:#0B0E14; --bg-surface:#11151F; --bg-surface-alt:#141926;
+    --text-main:#E7E9EE; --text-muted:#7B8298; --border-color:#232A3B; --border-soft:#1B2130;
+    --accent:#D4A340; --teal:#4FB6A8;
+  }
+  *{box-sizing:border-box;} html,body{margin:0;padding:0;}
+  body{background:var(--bg-color);color:var(--text-main);font-family:'Inter',-apple-system,sans-serif;line-height:1.65;}
+  a{color:var(--accent);}
+  .heading{font-family:'Space Grotesk',sans-serif;}
+  .wrap{max-width:760px;margin:0 auto;padding:0 20px;}
+  .topbar{border-bottom:1px solid var(--border-soft);padding:16px 0;margin-bottom:8px;}
+  .topbar .wrap{display:flex;align-items:center;justify-content:space-between;}
+  .brand{display:flex;align-items:center;gap:10px;font-weight:600;font-size:15px;text-decoration:none;color:var(--text-main);}
+  .brand img{width:32px;height:32px;border-radius:6px;object-fit:cover;}
+  .back{font-size:13px;color:var(--text-muted);}
+  article{padding:36px 0 80px;}
+  h1{font-size:clamp(26px,4vw,36px);font-weight:700;margin:0 0 10px;}
+  .meta{color:var(--text-muted);font-size:13px;margin-bottom:24px;}
+  .yt-embed{position:relative;padding-top:56.25%;border-radius:12px;overflow:hidden;background:#000;margin-bottom:28px;}
+  .yt-embed iframe{position:absolute;inset:0;width:100%;height:100%;border:0;}
+  .body-content h2{font-family:'Space Grotesk',sans-serif;font-size:22px;margin-top:32px;}
+  .body-content h3{font-family:'Space Grotesk',sans-serif;font-size:18px;margin-top:26px;}
+  .body-content p{margin:0 0 16px;color:#D3D6DE;}
+  .body-content ul, .body-content ol{color:#D3D6DE;padding-left:22px;}
+  .body-content code{background:var(--bg-surface-alt);padding:2px 6px;border-radius:4px;font-size:.9em;}
+  .body-content pre{background:var(--bg-surface-alt);padding:14px;border-radius:8px;overflow-x:auto;}
+  .body-content blockquote{border-left:3px solid var(--accent);margin:0 0 16px;padding:2px 0 2px 16px;color:var(--text-muted);}
+  .tags{margin-top:32px;display:flex;gap:8px;flex-wrap:wrap;}
+  .tag{background:var(--bg-surface);border:1px solid var(--border-soft);border-radius:999px;padding:4px 12px;font-size:12px;color:var(--text-muted);}
+  .empty{color:var(--text-muted);padding:60px 0;text-align:center;}
+  footer{border-top:1px solid var(--border-soft);padding:24px 0;text-align:center;color:var(--text-muted);font-size:13px;}
+</style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="wrap">
+      <a href="/" class="brand"><img src="/assets/logo.png" alt="Tereda Trades" /> Tereda Trades</a>
+      <a href="/articles/" class="back">&larr; All articles</a>
+    </div>
+  </header>
+
+  <div class="wrap">
+    <article id="article"><p class="empty">Loading…</p></article>
+  </div>
+
+  <footer>&copy; 2026 Tereda Trades. <a href="/">Back to home</a></footer>
+
+<script>
+const supabase = window.supabase.createClient(
+  'https://mvmosynzbawxeuqfyitj.supabase.co',
+  'sb_publishable_gfFVcf_Tf4cwsUY8DiUZSw_fF-wtwz'
+);
+
+function escapeHtml(s) {
+  const d = document.createElement('div');
+  d.textContent = s;
+  return d.innerHTML;
+}
+
+async function load() {
+  const params = new URLSearchParams(location.search);
+  const slug = params.get('slug');
+  const container = document.getElementById('article');
+  if (!slug) { container.innerHTML = '<p class="empty">Article not found.</p>'; return; }
+
+  const { data: a, error } = await supabase
+    .from('articles')
+    .select('*')
+    .eq('slug', slug)
+    .eq('status', 'published')
+    .in('visibility', ['website', 'both'])
+    .single();
+
+  if (error || !a) { container.innerHTML = '<p class="empty">Article not found.</p>'; return; }
+
+  document.title = a.title + ' | Tereda Trades';
+  document.getElementById('metaDesc').setAttribute('content', a.excerpt || a.title);
+
+  const dateStr = a.published_at ? new Date(a.published_at).toLocaleDateString(undefined,{year:'numeric',month:'long',day:'numeric'}) : '';
+  const videoHtml = a.youtube_id
+    ? `<div class="yt-embed"><iframe src="https://www.youtube.com/embed/${a.youtube_id}" title="${escapeHtml(a.title)}" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe></div>`
+    : '';
+  const tagsHtml = (a.tags && a.tags.length)
+    ? `<div class="tags">${a.tags.map(t => `<span class="tag">${escapeHtml(t)}</span>`).join('')}</div>`
+    : '';
+
+  container.innerHTML = `
+    <h1 class="heading">${escapeHtml(a.title)}</h1>
+    <div class="meta">${dateStr}</div>
+    ${videoHtml}
+    <div class="body-content">${DOMPurify.sanitize(marked.parse(a.body || ''))}</div>
+    ${tagsHtml}
+  `;
+}
+
+load();
+</script>
+</body>
+</html>

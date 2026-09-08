@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Articles Admin | Tereda Trades</title>
+<meta name="robots" content="noindex, nofollow" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/supabase/2.39.0/supabase.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/marked/12.0.0/marked.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/3.0.9/purify.min.js"></script>
+<style>
+  :root{
+    --bg-color:#0B0E14; --bg-surface:#11151F; --bg-surface-alt:#141926;
+    --text-main:#E7E9EE; --text-muted:#7B8298; --text-dark:#454C60;
+    --border-color:#232A3B; --border-soft:#1B2130;
+    --accent:#D4A340; --accent-hover:#E3B65B; --accent-ink:#181205;
+    --teal:#4FB6A8; --danger:#D4574A;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0; background:var(--bg-color); color:var(--text-main);
+    font-family:-apple-system,'Inter',sans-serif; line-height:1.5;
+  }
+  .wrap{max-width:960px;margin:0 auto;padding:32px 20px 80px;}
+  h1{font-size:22px;margin:0 0 4px;}
+  .sub{color:var(--text-muted);font-size:13px;margin:0 0 28px;}
+  .card{background:var(--bg-surface);border:1px solid var(--border-soft);border-radius:12px;padding:22px;margin-bottom:20px;}
+  label{display:block;font-size:12px;color:var(--text-muted);margin:14px 0 6px;font-weight:600;}
+  label:first-child{margin-top:0;}
+  input[type=text], textarea, select{
+    width:100%; background:var(--bg-surface-alt); border:1px solid var(--border-color);
+    color:var(--text-main); border-radius:8px; padding:10px 12px; font-size:14px;
+    font-family:inherit;
+  }
+  textarea{resize:vertical;}
+  #body{min-height:220px;font-family:'JetBrains Mono',monospace;font-size:13px;}
+  .row{display:flex;gap:14px;flex-wrap:wrap;}
+  .row > div{flex:1;min-width:180px;}
+  .btn{
+    border:none;border-radius:8px;padding:10px 18px;font-size:14px;font-weight:600;
+    cursor:pointer;background:var(--accent);color:var(--accent-ink);
+  }
+  .btn:hover{background:var(--accent-hover);}
+  .btn.secondary{background:transparent;border:1px solid var(--border-color);color:var(--text-main);}
+  .btn.danger{background:var(--danger);color:#fff;}
+  .actions{display:flex;gap:10px;margin-top:18px;flex-wrap:wrap;}
+  .yt-preview{margin-top:10px;}
+  .yt-preview .ratio{position:relative;padding-top:56.25%;border-radius:8px;overflow:hidden;background:#000;}
+  .yt-preview iframe{position:absolute;inset:0;width:100%;height:100%;border:0;}
+  .yt-error{color:var(--danger);font-size:12px;margin-top:6px;}
+  table{width:100%;border-collapse:collapse;font-size:13px;}
+  th,td{text-align:left;padding:10px 8px;border-bottom:1px solid var(--border-soft);}
+  th{color:var(--text-muted);font-weight:600;font-size:11px;text-transform:uppercase;letter-spacing:.04em;}
+  .badge{display:inline-block;padding:2px 8px;border-radius:999px;font-size:11px;font-weight:600;}
+  .badge.published{background:rgba(79,182,168,.15);color:var(--teal);}
+  .badge.draft{background:rgba(212,163,64,.15);color:var(--accent);}
+  .linklike{background:none;border:none;color:var(--accent);cursor:pointer;font-size:13px;padding:0;margin-right:12px;}
+  .msg{font-size:13px;margin-top:10px;}
+  .msg.ok{color:var(--teal);}
+  .msg.err{color:var(--danger);}
+  #gate{display:flex;align-items:center;justify-content:center;min-height:100vh;text-align:center;padding:24px;}
+  #gate input{max-width:280px;margin:0 auto 10px;}
+  #app{display:none;}
+</style>
+</head>
+<body>
+
+<div id="gate">
+  <div>
+    <h2>Articles Admin</h2>
+    <p class="sub">Log in with your TeredaTrades admin account.</p>
+    <input type="text" id="email" placeholder="Email" />
+    <input type="text" id="password" placeholder="Password" style="margin-top:8px;" />
+    <div class="actions" style="justify-content:center;">
+      <button class="btn" id="loginBtn">Log in</button>
+    </div>
+    <p class="msg err" id="loginMsg"></p>
+  </div>
+</div>
+
+<div id="app">
+  <div class="wrap">
+    <h1>Articles</h1>
+    <p class="sub">Write an article, drop in a YouTube link, choose where it shows up, publish.</p>
+
+    <div class="card">
+      <div id="formTitle" style="font-weight:600;margin-bottom:4px;">New article</div>
+
+      <label>Title</label>
+      <input type="text" id="title" placeholder="e.g. Why liquidity sweeps precede reversals" />
+
+      <label>Slug (URL) — auto-filled from title, edit if you want</label>
+      <input type="text" id="slug" placeholder="why-liquidity-sweeps-precede-reversals" />
+
+      <label>Excerpt (shown in article lists)</label>
+      <textarea id="excerpt" rows="2" placeholder="One or two sentence summary"></textarea>
+
+      <label>YouTube link (optional) — paste any youtube.com or youtu.be URL</label>
+      <input type="text" id="youtubeUrl" placeholder="https://www.youtube.com/watch?v=..." />
+      <div class="yt-preview" id="ytPreview"></div>
+
+      <label>Body (Markdown supported)</label>
+      <textarea id="body" placeholder="Write the article here. Markdown is supported (headings, bold, lists, links)."></textarea>
+
+      <div class="row">
+        <div>
+          <label>Tags (comma separated)</label>
+          <input type="text" id="tags" placeholder="ict, liquidity, gold" />
+        </div>
+        <div>
+          <label>Show this article on</label>
+          <select id="visibility">
+            <option value="website">Website only</option>
+            <option value="tool">Premarket tool only</option>
+            <option value="both">Both</option>
+          </select>
+        </div>
+        <div>
+          <label>Status</label>
+          <select id="status">
+            <option value="draft">Draft</option>
+            <option value="published">Published</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="actions">
+        <button class="btn" id="saveBtn">Save</button>
+        <button class="btn secondary" id="previewBtn" type="button">Preview body</button>
+        <button class="btn secondary" id="clearBtn" type="button">New / Clear</button>
+        <button class="btn danger" id="deleteBtn" type="button" style="display:none;">Delete</button>
+      </div>
+      <p class="msg" id="saveMsg"></p>
+      <div id="bodyPreview" style="display:none;margin-top:16px;padding-top:16px;border-top:1px solid var(--border-soft);"></div>
+    </div>
+
+    <div class="card">
+      <div style="font-weight:600;margin-bottom:12px;">All articles</div>
+      <table>
+        <thead><tr><th>Title</th><th>Status</th><th>Visibility</th><th>Updated</th><th></th></tr></thead>
+        <tbody id="articleList"><tr><td colspan="5">Loading…</td></tr></tbody>
+      </table>
+    </div>
+
+    <button class="btn secondary" id="signOutBtn">Sign out</button>
+  </div>
+</div>
+
+<script>
+const SUPABASE_URL = 'https://mvmosynzbawxeuqfyitj.supabase.co';
+const SUPABASE_ANON_KEY = 'sb_publishable_gfFVcf_Tf4cwsUY8DiUZSw_fF-wtwz';
+const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+let editingId = null;
+
+function extractYouTubeId(url) {
+  if (!url) return null;
+  url = url.trim();
+  const patterns = [
+    /(?:youtube\.com\/watch\?v=)([^&\n?#]+)/,
+    /(?:youtu\.be\/)([^&\n?#]+)/,
+    /(?:youtube\.com\/embed\/)([^&\n?#]+)/,
+    /(?:youtube\.com\/shorts\/)([^&\n?#]+)/,
+  ];
+  for (const p of patterns) {
+    const m = url.match(p);
+    if (m) return m[1];
+  }
+  if (/^[a-zA-Z0-9_-]{11}$/.test(url)) return url;
+  return null;
+}
+
+function slugify(text) {
+  return text.toLowerCase().trim()
+    .replace(/[^a-z0-9\s-]/g, '')
+    .replace(/\s+/g, '-')
+    .replace(/-+/g, '-')
+    .replace(/^-|-$/g, '');
+}
+
+const titleEl = document.getElementById('title');
+const slugEl = document.getElementById('slug');
+let slugManuallyEdited = false;
+slugEl.addEventListener('input', () => { slugManuallyEdited = true; });
+titleEl.addEventListener('input', () => {
+  if (!slugManuallyEdited) slugEl.value = slugify(titleEl.value);
+});
+
+const ytInput = document.getElementById('youtubeUrl');
+ytInput.addEventListener('input', renderYtPreview);
+function renderYtPreview() {
+  const id = extractYouTubeId(ytInput.value);
+  const box = document.getElementById('ytPreview');
+  if (!ytInput.value) { box.innerHTML = ''; return; }
+  if (!id) { box.innerHTML = '<div class="yt-error">Couldn\'t read a video ID from that link.</div>'; return; }
+  box.innerHTML = `<div class="ratio"><iframe src="https://www.youtube.com/embed/${id}" allowfullscreen loading="lazy"></iframe></div>`;
+}
+
+document.getElementById('previewBtn').addEventListener('click', () => {
+  const el = document.getElementById('bodyPreview');
+  if (el.style.display === 'none') {
+    const raw = document.getElementById('body').value;
+    el.innerHTML = DOMPurify.sanitize(marked.parse(raw || ''));
+    el.style.display = 'block';
+  } else {
+    el.style.display = 'none';
+  }
+});
+
+document.getElementById('clearBtn').addEventListener('click', clearForm);
+function clearForm() {
+  editingId = null;
+  document.getElementById('formTitle').textContent = 'New article';
+  titleEl.value = ''; slugEl.value = ''; slugManuallyEdited = false;
+  document.getElementById('excerpt').value = '';
+  ytInput.value = ''; renderYtPreview();
+  document.getElementById('body').value = '';
+  document.getElementById('tags').value = '';
+  document.getElementById('visibility').value = 'website';
+  document.getElementById('status').value = 'draft';
+  document.getElementById('deleteBtn').style.display = 'none';
+  document.getElementById('saveMsg').textContent = '';
+  document.getElementById('bodyPreview').style.display = 'none';
+}
+
+document.getElementById('saveBtn').addEventListener('click', async () => {
+  const msg = document.getElementById('saveMsg');
+  const title = titleEl.value.trim();
+  const slug = slugEl.value.trim();
+  const body = document.getElementById('body').value.trim();
+  if (!title || !slug || !body) {
+    msg.className = 'msg err'; msg.textContent = 'Title, slug, and body are required.'; return;
+  }
+  const ytUrl = ytInput.value.trim();
+  const youtubeId = ytUrl ? extractYouTubeId(ytUrl) : null;
+  if (ytUrl && !youtubeId) {
+    msg.className = 'msg err'; msg.textContent = "That YouTube link doesn't look valid — fix it or clear the field."; return;
+  }
+  const status = document.getElementById('status').value;
+  const record = {
+    title, slug, body,
+    excerpt: document.getElementById('excerpt').value.trim() || null,
+    youtube_id: youtubeId,
+    tags: document.getElementById('tags').value.split(',').map(t => t.trim()).filter(Boolean),
+    visibility: document.getElementById('visibility').value,
+    status,
+    published_at: status === 'published' ? new Date().toISOString() : null,
+  };
+
+  let error;
+  if (editingId) {
+    ({ error } = await supabase.from('articles').update(record).eq('id', editingId));
+  } else {
+    const { data: { user } } = await supabase.auth.getUser();
+    record.author_id = user.id;
+    ({ error } = await supabase.from('articles').insert(record));
+  }
+
+  if (error) {
+    msg.className = 'msg err';
+    msg.textContent = error.message.includes('duplicate') ? 'That slug is already taken.' : error.message;
+  } else {
+    msg.className = 'msg ok'; msg.textContent = 'Saved.';
+    clearForm();
+    loadArticles();
+  }
+});
+
+document.getElementById('deleteBtn').addEventListener('click', async () => {
+  if (!editingId || !confirm('Delete this article? This cannot be undone.')) return;
+  const { error } = await supabase.from('articles').delete().eq('id', editingId);
+  if (error) { alert(error.message); return; }
+  clearForm();
+  loadArticles();
+});
+
+async function loadArticles() {
+  const tbody = document.getElementById('articleList');
+  const { data, error } = await supabase.from('articles').select('*').order('updated_at', { ascending: false });
+  if (error) { tbody.innerHTML = `<tr><td colspan="5">${error.message}</td></tr>`; return; }
+  if (!data.length) { tbody.innerHTML = '<tr><td colspan="5">No articles yet.</td></tr>'; return; }
+  tbody.innerHTML = data.map(a => `
+    <tr>
+      <td>${a.title}</td>
+      <td><span class="badge ${a.status}">${a.status}</span></td>
+      <td>${a.visibility}</td>
+      <td>${new Date(a.updated_at).toLocaleDateString()}</td>
+      <td>
+        <button class="linklike" onclick="editArticle('${a.id}')">Edit</button>
+      </td>
+    </tr>
+  `).join('');
+  window.__articles = data;
+}
+
+window.editArticle = function(id) {
+  const a = window.__articles.find(x => x.id === id);
+  if (!a) return;
+  editingId = id;
+  document.getElementById('formTitle').textContent = 'Editing: ' + a.title;
+  titleEl.value = a.title; slugEl.value = a.slug; slugManuallyEdited = true;
+  document.getElementById('excerpt').value = a.excerpt || '';
+  ytInput.value = a.youtube_id ? `https://youtu.be/${a.youtube_id}` : '';
+  renderYtPreview();
+  document.getElementById('body').value = a.body;
+  document.getElementById('tags').value = (a.tags || []).join(', ');
+  document.getElementById('visibility').value = a.visibility;
+  document.getElementById('status').value = a.status;
+  document.getElementById('deleteBtn').style.display = 'inline-block';
+  document.getElementById('saveMsg').textContent = '';
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+};
+
+document.getElementById('signOutBtn').addEventListener('click', async () => {
+  await supabase.auth.signOut();
+  location.reload();
+});
+
+document.getElementById('loginBtn').addEventListener('click', async () => {
+  const email = document.getElementById('email').value.trim();
+  const password = document.getElementById('password').value;
+  const msg = document.getElementById('loginMsg');
+  const { error } = await supabase.auth.signInWithPassword({ email, password });
+  if (error) { msg.textContent = error.message; return; }
+  checkAdminAndEnter();
+});
+
+async function checkAdminAndEnter() {
+  const { data: { session } } = await supabase.auth.getSession();
+  if (!session) return;
+  const { data: profile, error } = await supabase.from('profiles').select('is_admin').eq('id', session.user.id).single();
+  if (error || !profile || !profile.is_admin) {
+    document.getElementById('loginMsg').textContent = 'This account does not have admin access.';
+    await supabase.auth.signOut();
+    return;
+  }
+  document.getElementById('gate').style.display = 'none';
+  document.getElementById('app').style.display = 'block';
+  loadArticles();
+}
+
+checkAdminAndEnter();
+</script>
+</body>
+</html>
