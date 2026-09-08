@@ -1,0 +1,12 @@
+{
+  "name": "teredatrades-website",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "generate:articles": "node scripts/generate-articles.mjs"
+  },
+  "dependencies": {
+    "marked": "^12.0.0",
+    "sanitize-html": "^2.13.1"
+  }
+}

@@ -1,0 +1,46 @@
+name: Generate static article pages
+
+on:
+  schedule:
+    # Every 30 minutes — picks up newly published/edited articles from Supabase.
+    - cron: '*/30 * * * *'
+  workflow_dispatch: {}
+  push:
+    branches: [main]
+    paths:
+      - 'scripts/generate-articles.mjs'
+      - 'package.json'
+      - '.github/workflows/generate-articles.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Generate article pages, index, and sitemap
+        run: npm run generate:articles
+
+      - name: Commit and push if changed
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add articles/ sitemap.xml
+          if git diff --cached --quiet; then
+            echo "No article changes to commit."
+          else
+            git commit -m "chore: regenerate static article pages [automated]"
+            git push
+          fi
