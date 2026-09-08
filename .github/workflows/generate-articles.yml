@@ -14,6 +14,7 @@ on:
 
 permissions:
   contents: write
+  issues: write
 
 jobs:
   generate:
@@ -31,7 +32,22 @@ jobs:
         run: npm install
 
       - name: Generate article pages, index, and sitemap
-        run: npm run generate:articles
+        id: generate
+        continue-on-error: true
+        run: npm run generate:articles > /tmp/gen-output.log 2>&1; echo "exit_code=$?" >> "$GITHUB_OUTPUT"; cat /tmp/gen-output.log
+
+      - name: Report failure as an issue
+        if: steps.generate.outputs.exit_code != '0'
+        run: |
+          BODY=$(tail -c 60000 /tmp/gen-output.log)
+          curl -s -X POST -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+            -H "Accept: application/vnd.github+json" \
+            "https://api.github.com/repos/${{ github.repository }}/issues" \
+            -d "$(jq -n --arg body "$BODY" '{title: "generate-articles failed", body: $body, labels: ["automation-failure"]}')"
+
+      - name: Fail job if generation failed
+        if: steps.generate.outputs.exit_code != '0'
+        run: exit 1
 
       - name: Commit and push if changed
         run: |
