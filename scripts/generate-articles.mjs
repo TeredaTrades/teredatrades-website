@@ -49,11 +49,14 @@ async function fetchArticles() {
     headers: {
       apikey: SUPABASE_KEY,
       Authorization: `Bearer ${SUPABASE_KEY}`,
+      Origin: SITE_URL,
+      Referer: `${SITE_URL}/`,
     },
   });
 
   if (!res.ok) {
-    throw new Error(`Supabase fetch failed: ${res.status} ${res.statusText}`);
+    const bodyText = await res.text().catch(() => '');
+    throw new Error(`Supabase fetch failed: ${res.status} ${res.statusText} — ${bodyText}`);
   }
 
   const data = await res.json();
