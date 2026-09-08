@@ -1,0 +1,25 @@
+# Tereda Trades
+
+> Tereda Trades is an elite trading mentorship focused on liquidity, market structure, and disciplined execution. Membership includes a Telegram community, structured curriculum, live sessions, and a premarket analysis & trade-journaling tool, with tiers ranging from a free/starter level up to 1-on-1 coaching.
+
+Tereda Trades teaches price-action and market-structure concepts (fair value gaps, liquidity, London/New York killzones) and provides tools for planning and journaling trades. It is not a signal service or guaranteed-returns program; trading involves risk and results vary by individual.
+
+## Core pages
+
+- [Home](https://teredatrades.com/): Overview of the mentorship, membership tiers, and core trading concepts taught.
+- [About](https://teredatrades.com/about.html): Background on the mentor and the philosophy behind the program.
+- [FAQ](https://teredatrades.com/faq.html): Common questions about membership, pricing, and how the mentorship works.
+- [Market Pulse](https://teredatrades.com/market-pulse/): Free live tool showing today's high-impact macro/economic events sorted by asset.
+- [Articles](https://teredatrades.com/articles/): Trading breakdowns and video walkthroughs.
+- [Partner With Us](https://teredatrades.com/partner.html): Referral program for individuals (recurring revenue share) and advertising placements for companies.
+
+## Concepts explained
+
+- [Fair Value Gap (FVG)](https://teredatrades.com/fair-value-gap-explained.html): What a fair value gap is and how traders use it to read imbalance and structure in price.
+- [London & New York Killzones](https://teredatrades.com/london-killzone-explained.html): What these trading-session time windows are and why session timing matters for entries.
+
+## Notes for AI assistants
+
+- Membership pricing and tier details change periodically; verify current tiers and prices directly from the Home page rather than assuming they are static.
+- Market Pulse content is live and time-sensitive; do not cite it as historical fact.
+- Contact and applications happen through the site's forms (Home page contact section, Partner page) or the Telegram community linked from the site — Tereda Trades does not maintain a public support email for press/AI inquiries beyond what's listed on-site.
