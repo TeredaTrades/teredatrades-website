@@ -1,10 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>https://teredatrades.com/</loc>
     <lastmod>2026-08-25</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://teredatrades.com/" />
+    <xhtml:link rel="alternate" hreflang="am" href="https://teredatrades.com/am/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://teredatrades.com/" />
   </url>
   <url>
     <loc>https://teredatrades.com/market-pulse/</loc>
@@ -17,30 +20,45 @@
     <lastmod>2026-08-08</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://teredatrades.com/about.html" />
+    <xhtml:link rel="alternate" hreflang="am" href="https://teredatrades.com/am/about.html" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://teredatrades.com/about.html" />
   </url>
   <url>
     <loc>https://teredatrades.com/faq.html</loc>
     <lastmod>2026-08-08</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://teredatrades.com/faq.html" />
+    <xhtml:link rel="alternate" hreflang="am" href="https://teredatrades.com/am/faq.html" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://teredatrades.com/faq.html" />
   </url>
   <url>
     <loc>https://teredatrades.com/partner.html</loc>
-    <lastmod>2026-08-04</lastmod>
+    <lastmod>2026-09-10</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://teredatrades.com/partner.html" />
+    <xhtml:link rel="alternate" hreflang="am" href="https://teredatrades.com/am/partner.html" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://teredatrades.com/partner.html" />
   </url>
   <url>
     <loc>https://teredatrades.com/fair-value-gap-explained.html</loc>
     <lastmod>2026-08-08</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://teredatrades.com/fair-value-gap-explained.html" />
+    <xhtml:link rel="alternate" hreflang="am" href="https://teredatrades.com/am/fair-value-gap-explained.html" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://teredatrades.com/fair-value-gap-explained.html" />
   </url>
   <url>
     <loc>https://teredatrades.com/london-killzone-explained.html</loc>
     <lastmod>2026-08-08</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://teredatrades.com/london-killzone-explained.html" />
+    <xhtml:link rel="alternate" hreflang="am" href="https://teredatrades.com/am/london-killzone-explained.html" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://teredatrades.com/london-killzone-explained.html" />
   </url>
   <url>
     <loc>https://teredatrades.com/articles/</loc>
@@ -53,5 +71,71 @@
     <lastmod>2026-08-08</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://teredatrades.com/privacy.html" />
+    <xhtml:link rel="alternate" hreflang="am" href="https://teredatrades.com/am/privacy.html" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://teredatrades.com/privacy.html" />
+  </url>
+  <url>
+    <loc>https://teredatrades.com/am/</loc>
+    <lastmod>2026-09-10</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://teredatrades.com/" />
+    <xhtml:link rel="alternate" hreflang="am" href="https://teredatrades.com/am/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://teredatrades.com/" />
+  </url>
+  <url>
+    <loc>https://teredatrades.com/am/about.html</loc>
+    <lastmod>2026-09-10</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://teredatrades.com/about.html" />
+    <xhtml:link rel="alternate" hreflang="am" href="https://teredatrades.com/am/about.html" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://teredatrades.com/about.html" />
+  </url>
+  <url>
+    <loc>https://teredatrades.com/am/faq.html</loc>
+    <lastmod>2026-09-10</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://teredatrades.com/faq.html" />
+    <xhtml:link rel="alternate" hreflang="am" href="https://teredatrades.com/am/faq.html" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://teredatrades.com/faq.html" />
+  </url>
+  <url>
+    <loc>https://teredatrades.com/am/partner.html</loc>
+    <lastmod>2026-09-10</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://teredatrades.com/partner.html" />
+    <xhtml:link rel="alternate" hreflang="am" href="https://teredatrades.com/am/partner.html" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://teredatrades.com/partner.html" />
+  </url>
+  <url>
+    <loc>https://teredatrades.com/am/fair-value-gap-explained.html</loc>
+    <lastmod>2026-09-10</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://teredatrades.com/fair-value-gap-explained.html" />
+    <xhtml:link rel="alternate" hreflang="am" href="https://teredatrades.com/am/fair-value-gap-explained.html" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://teredatrades.com/fair-value-gap-explained.html" />
+  </url>
+  <url>
+    <loc>https://teredatrades.com/am/london-killzone-explained.html</loc>
+    <lastmod>2026-09-10</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://teredatrades.com/london-killzone-explained.html" />
+    <xhtml:link rel="alternate" hreflang="am" href="https://teredatrades.com/am/london-killzone-explained.html" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://teredatrades.com/london-killzone-explained.html" />
+  </url>
+  <url>
+    <loc>https://teredatrades.com/am/privacy.html</loc>
+    <lastmod>2026-09-10</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.2</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://teredatrades.com/privacy.html" />
+    <xhtml:link rel="alternate" hreflang="am" href="https://teredatrades.com/am/privacy.html" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://teredatrades.com/privacy.html" />
   </url>
 </urlset>

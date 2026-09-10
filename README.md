@@ -4,9 +4,25 @@
 
 - **Multi-language site**: idea to eventually offer teredatrades.com in
   the same languages the Bejirond app is being built for — English,
-  Amharic, Oromifa, French, Arabic, Swahili, Tigrinya. Not started —
-  no i18n scaffolding, hreflang tags, or translated content exists yet
-  (site is currently `lang="en"` only across every page).
+  Amharic, Oromifa, French, Arabic, Swahili, Tigrinya.
+  - **Phase 1 (Amharic static pages) implemented 2026-09-10**, on branch
+    `i18n/amharic-static-pages` — all 7 static marketing pages
+    (`index.html`, `about.html`, `faq.html`, `partner.html`,
+    `fair-value-gap-explained.html`, `london-killzone-explained.html`,
+    `privacy.html`) translated into Amharic under `/am/`, `lang="am"`,
+    self-referencing canonicals, `og:locale` set to `am_ET`, and
+    `hreflang` alternates (en / am / x-default) wired into
+    `generate-articles.mjs`'s `sitemapXml()` via a `HREFLANG_GROUPS` map
+    keyed by the English URL — add future languages/pages there. Each
+    Amharic page also carries a small "English" nav link back to its
+    English counterpart (not a full switcher — that's still phase 2).
+    Form field `name`/`id` attributes and `<option value="">` values
+    were kept in English so HubSpot/Sheets submissions stay consistent
+    across languages; only the visible label text is translated.
+    `sitemap.xml` was hand-regenerated to match what the script now
+    produces (no Supabase credentials available in that session to run
+    it directly) — verify it matches on the next real CI run.
+  - Om/fr/ar/sw/ti not started.
   - **Structure decided (2026-09-09)**: subdirectories, not subdomains
     or ccTLDs — `/am/`, `/om/`, `/fr/`, `/ar/`, `/sw/`, `/ti/`, mirroring
     the existing page tree (index.html, about.html, faq.html,
@@ -39,12 +55,12 @@
     block crawlers and annoys users; use a visible language switcher in
     the nav instead.
   - **Suggested phasing**: (1) static marketing pages in all 6 languages
-    + hreflang via sitemap, (2) nav language switcher, (3) Arabic RTL
-    support, (4) articles CMS localization (Supabase schema change),
+    + hreflang via sitemap — **Amharic done, other 5 languages not
+    started**; (2) nav language switcher (still just the one-off
+    "English" escape link on Amharic pages for now); (3) Arabic RTL
+    support; (4) articles CMS localization (Supabase schema change);
     (5) Market Pulse localization (lowest priority — mostly
     numbers/tickers, least translation-dependent).
-  - Not yet started — this is the agreed plan, no implementation work
-    has begun.
 
 ## Open items (as of 2026-09-09)
 
