@@ -373,6 +373,14 @@ const STATIC_SITEMAP_URLS = [
   { loc: `${SITE_URL}/london-killzone-explained.html`, changefreq: 'monthly', priority: '0.7' },
   { loc: `${SITE_URL}/articles/`, changefreq: 'weekly', priority: '0.8' },
   { loc: `${SITE_URL}/privacy.html`, changefreq: 'yearly', priority: '0.3' },
+  // Amharic translations (phase 1 of the i18n plan — static pages only).
+  { loc: `${SITE_URL}/am/`, changefreq: 'weekly', priority: '0.9' },
+  { loc: `${SITE_URL}/am/about.html`, changefreq: 'monthly', priority: '0.7' },
+  { loc: `${SITE_URL}/am/faq.html`, changefreq: 'monthly', priority: '0.6' },
+  { loc: `${SITE_URL}/am/partner.html`, changefreq: 'monthly', priority: '0.5' },
+  { loc: `${SITE_URL}/am/fair-value-gap-explained.html`, changefreq: 'monthly', priority: '0.6' },
+  { loc: `${SITE_URL}/am/london-killzone-explained.html`, changefreq: 'monthly', priority: '0.6' },
+  { loc: `${SITE_URL}/am/privacy.html`, changefreq: 'yearly', priority: '0.2' },
 ];
 
 // Fixed lastmod values for the hand-maintained static pages above, so
@@ -387,7 +395,44 @@ const STATIC_LASTMOD = {
   [`${SITE_URL}/london-killzone-explained.html`]: '2026-08-08',
   [`${SITE_URL}/articles/`]: new Date().toISOString().slice(0, 10),
   [`${SITE_URL}/privacy.html`]: '2026-08-08',
+  [`${SITE_URL}/am/`]: '2026-09-10',
+  [`${SITE_URL}/am/about.html`]: '2026-09-10',
+  [`${SITE_URL}/am/faq.html`]: '2026-09-10',
+  [`${SITE_URL}/am/partner.html`]: '2026-09-10',
+  [`${SITE_URL}/am/fair-value-gap-explained.html`]: '2026-09-10',
+  [`${SITE_URL}/am/london-killzone-explained.html`]: '2026-09-10',
+  [`${SITE_URL}/am/privacy.html`]: '2026-09-10',
 };
+
+// hreflang alternates for pages that exist in more than one language.
+// Keyed by the English (default) URL; each entry lists every language
+// version of that page, including itself. x-default points at English.
+// As more languages/pages are translated, add them here — this is the
+// single place the sitemap's hreflang annotations are generated from.
+const HREFLANG_GROUPS = {
+  [`${SITE_URL}/`]: { en: `${SITE_URL}/`, am: `${SITE_URL}/am/` },
+  [`${SITE_URL}/about.html`]: { en: `${SITE_URL}/about.html`, am: `${SITE_URL}/am/about.html` },
+  [`${SITE_URL}/faq.html`]: { en: `${SITE_URL}/faq.html`, am: `${SITE_URL}/am/faq.html` },
+  [`${SITE_URL}/partner.html`]: { en: `${SITE_URL}/partner.html`, am: `${SITE_URL}/am/partner.html` },
+  [`${SITE_URL}/fair-value-gap-explained.html`]: { en: `${SITE_URL}/fair-value-gap-explained.html`, am: `${SITE_URL}/am/fair-value-gap-explained.html` },
+  [`${SITE_URL}/london-killzone-explained.html`]: { en: `${SITE_URL}/london-killzone-explained.html`, am: `${SITE_URL}/am/london-killzone-explained.html` },
+  [`${SITE_URL}/privacy.html`]: { en: `${SITE_URL}/privacy.html`, am: `${SITE_URL}/am/privacy.html` },
+};
+// Reverse lookup so an /am/ URL can find its own group too.
+for (const group of Object.values(HREFLANG_GROUPS)) {
+  HREFLANG_GROUPS[group.am] = group;
+}
+
+function hreflangLinks(loc) {
+  const group = HREFLANG_GROUPS[loc];
+  if (!group) return '';
+  const links = [
+    `    <xhtml:link rel="alternate" hreflang="en" href="${group.en}" />`,
+    `    <xhtml:link rel="alternate" hreflang="am" href="${group.am}" />`,
+    `    <xhtml:link rel="alternate" hreflang="x-default" href="${group.en}" />`,
+  ];
+  return `\n${links.join('\n')}`;
+}
 
 function sitemapXml(articles) {
   const staticEntries = STATIC_SITEMAP_URLS.map(
@@ -395,7 +440,7 @@ function sitemapXml(articles) {
     <loc>${u.loc}</loc>
     <lastmod>${STATIC_LASTMOD[u.loc]}</lastmod>
     <changefreq>${u.changefreq}</changefreq>
-    <priority>${u.priority}</priority>
+    <priority>${u.priority}</priority>${hreflangLinks(u.loc)}
   </url>`
   );
 
@@ -410,7 +455,7 @@ function sitemapXml(articles) {
   });
 
   return `<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
 ${[...staticEntries, ...articleEntries].join('\n')}
 </urlset>
 `;
