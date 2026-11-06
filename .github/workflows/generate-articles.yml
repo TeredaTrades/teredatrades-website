@@ -2,8 +2,9 @@ name: Generate static article pages
 
 on:
   schedule:
-    # Every 30 minutes — picks up newly published/edited articles from Supabase.
-    - cron: '*/30 * * * *'
+    # Every 6 hours — picks up newly published/edited articles from Supabase.
+    # (Was every 30 min; GitHub throttles that anyway and no articles are published yet.)
+    - cron: '0 */6 * * *'
   workflow_dispatch: {}
   push:
     branches: [main]
